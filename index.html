@@ -1,66 +1,418 @@
+```html
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Saúde e Bem-Estar</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Da Roça - Kits de Alimentos Direto do Produtor</title>
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Chart.js para Relatórios Visuais -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Fontes Google Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .line-clamp-2 {
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .cart-drawer-enter {
+      transform: translateX(100%);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .cart-drawer-open {
+      transform: translateX(0);
+    }
+  </style>
 </head>
-<body>
-<header>
-<h1>Guia de Saúde e Bem-Estar</h1>
-<nav>
-<ul>
-<li><a href="#inicio">Início</a></li>
-<li><a href="#saude-fisica">Saúde Física</a></li>
-<li><a href="#saude-mental">Saúde Mental</a></li>
-<li><a href="#contato">Contato</a></li>
-</ul>
-</nav>
-</header>
-​<main>
-<section id="inicio">
-<h2>Bem-vindo ao seu guia de equilíbrio</h2>
-<p>Descubra dicas e orientações para melhorar sua saúde física e mental diariamente.</p>
-</section>
-​<section id="saude-fisica">
-<h2>Saúde Física</h2>
-<article>
-<h3>Alimentação Saudável</h3>
-<p>Consuma alimentos frescos, frutas, verduras e beba bastante água. Evite processados.</p>
-</article>
-<article>
-<h3>Exercícios Regulares</h3>
-<p>Pratique pelo menos 30 minutos de atividade física diária, como caminhada ou natação.</p>
-</article>
-</section>
-​<section id="saude-mental">
-<h2>Saúde Mental</h2>
-<article>
-<h3>Práticas de Mindfulness</h3>
-<p>Reserve um tempo para meditar ou simplesmente respirar fundo e focar no presente.</p>
-</article>
-<article>
-<h3>Sono de Qualidade</h3>
-<p>Durma entre 7 e 8 horas por noite para que seu cérebro descanse e se recupere.</p>
-</article>
-</section>
-​<section id="contato">
-<h2>Entre em Contato</h2>
-<form id="contato-form">
-<label for="nome">Nome:</label>
-<input type="text" id="nome" name="nome" required>
-​<label for="email">E-mail:</label>
-<input type="email" id="email" name="email" required>
-​<label for="mensagem">Mensagem:</label>
-<textarea id="mensagem" name="mensagem" required></textarea>
-​<button type="submit">Enviar</button>
-</form>
-</section>
-</main>
-​<footer>
-<p>© 2026 Guia de Saúde e Bem-Estar. Todos os direitos reservados.</p>
-</footer>
-​<script src="script.js"></script>
-</body>
-</html>
+<body class="bg-stone-50 text-stone-800 min-h-screen flex flex-col antialiased selection:bg-emerald-500 selection:text-white">
+
+  <!-- Header Fixo -->
+  <header class="bg-white/95 backdrop-blur shadow-sm sticky top-0 z-40 border-b border-stone-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+      <div class="flex items-center gap-3 cursor-pointer group flex-shrink-0" onclick="navigate('store')">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-600 to-amber-600 flex items-center justify-center text-white font-extrabold text-xl shadow-md group-hover:scale-105 transition-transform">
+          🧺
+        </div>
+        <div>
+          <span class="text-xl font-black text-emerald-950 tracking-tight block leading-tight flex items-center gap-1.5">
+            Da Roça <span class="text-[10px] bg-emerald-100 text-emerald-800 font-extrabold px-1.5 py-0.5 rounded-full border border-emerald-300">100% Campo</span>
+          </span>
+          <span class="text-xs text-stone-500 font-medium hidden sm:inline">Frescor Familiar Sem Intermediários</span>
+        </div>
+      </div>
+
+      <nav id="nav-actions" class="flex items-center gap-2 sm:gap-4"></nav>
+    </div>
+  </header>
+
+  <!-- Banner Panorâmico -->
+  <div class="relative w-full h-64 sm:h-80 overflow-hidden shadow-md">
+    <img 
+      src="https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=2000&q=85" 
+      alt="Plantação e colheita de alimentos frescos da roça" 
+      class="w-full h-full object-cover object-center"
+      onerror="this.src='https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=1600&q=80'"
+    />
+    <div class="absolute inset-0 bg-gradient-to-r from-emerald-950/90 via-emerald-950/60 to-transparent flex items-center">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full text-white">
+        <div class="max-w-2xl">
+          <span class="inline-flex items-center gap-2 bg-amber-500 text-emerald-950 font-black text-xs uppercase px-3 py-1 rounded-full shadow mb-2 tracking-wider">
+            <span>🌱</span> Colheita Familiar Matinal
+          </span>
+          <h1 class="text-2xl sm:text-4xl font-black leading-tight drop-shadow-md tracking-tight">
+            Alimentos Colhidos no Ponto Certo para sua Mesa
+          </h1>
+          <p class="text-emerald-100 text-xs sm:text-sm mt-2 leading-relaxed drop-shadow max-w-xl">
+            Legumes, folhas e frutas sem atravessadores. Escolha seus kits e pague diretamente ao entregador na sua porta.
+          </p>
+          <div class="mt-4 flex flex-wrap gap-2 text-xs font-bold">
+            <span class="bg-white/20 backdrop-blur-md px-3 py-1 rounded-xl border border-white/30 flex items-center gap-1.5">
+              ✓ Sem agrotóxicos agressivos
+            </span>
+            <span class="bg-white/20 backdrop-blur-md px-3 py-1 rounded-xl border border-white/30 flex items-center gap-1.5">
+              ✓ Pagamento Seguro no Portão
+            </span>
+            <span class="bg-white/20 backdrop-blur-md px-3 py-1 rounded-xl border border-white/30 flex items-center gap-1.5">
+              ✓ Entrega em até 24h
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Faixa de Destaques -->
+  <div class="bg-emerald-900 text-emerald-100 py-3 border-y border-emerald-800 text-xs font-semibold">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-wrap items-center justify-around gap-4 text-center">
+      <div class="flex items-center gap-2">
+        <span class="text-base">👩‍🌾</span>
+        <span>Apoiando mais de <strong>40 pequenos produtores</strong></span>
+      </div>
+      <div class="hidden sm:flex items-center gap-2">
+        <span class="text-base">🧺</span>
+        <span>Mais de <strong>2.800 cestas</strong> entregues com frescor</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="text-base">⭐</span>
+        <span>Satisfação <strong>4.9 / 5.0</strong> avaliada pelos clientes</span>
+      </div>
+    </div>
+  </div>
+
+  <main class="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8">
+    <div id="app-container"></div>
+  </main>
+
+  <!-- Rodapé -->
+  <footer class="bg-white border-t border-stone-200 py-8 text-xs text-stone-500 mt-auto">
+    <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-2">
+        <span class="text-xl">🧺</span>
+        <div>
+          <p class="font-bold text-stone-800 text-sm">Da Roça • Hortifrúti Familiar</p>
+          <p>© 2026 Da Roça • Sustentabilidade, saúde e preço justo da terra ao seu lar.</p>
+        </div>
+      </div>
+      <div class="flex flex-wrap gap-4 font-semibold text-stone-700">
+        <span>⚡ Pague na Entrega (Pix, Maquininha ou Dinheiro)</span>
+        <span>🌱 Embalagens Ecológicas</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Gaveta Lateral do Carrinho (Slide-over Cart) -->
+  <div id="cart-drawer-backdrop" class="fixed inset-0 bg-stone-950/60 backdrop-blur-sm z-50 hidden transition-opacity duration-300" onclick="toggleCartDrawer(false)"></div>
+  <div id="cart-drawer" class="fixed top-0 right-0 h-full w-full max-w-md bg-white shadow-2xl z-50 cart-drawer-enter flex flex-col transition-transform duration-300">
+    <div class="p-5 border-b border-stone-200 flex items-center justify-between bg-stone-50">
+      <div class="flex items-center gap-2">
+        <span class="text-2xl">🧺</span>
+        <div>
+          <h3 class="font-black text-emerald-950 text-lg">Sua Cesta Da Roça</h3>
+          <span id="cart-item-count-label" class="text-xs text-stone-500 font-bold">0 itens selecionados</span>
+        </div>
+      </div>
+      <button onclick="toggleCartDrawer(false)" class="w-8 h-8 rounded-full bg-stone-200/80 hover:bg-stone-300 flex items-center justify-center font-bold text-stone-600 text-lg transition">
+        &times;
+      </button>
+    </div>
+
+    <div id="cart-items-container" class="flex-1 overflow-y-auto p-5 space-y-4"></div>
+
+    <div class="p-5 border-t border-stone-200 bg-stone-50 space-y-3">
+      <div class="flex justify-between items-center text-sm font-semibold text-stone-600">
+        <span>Subtotal</span>
+        <span id="cart-subtotal" class="font-mono">R$ 0,00</span>
+      </div>
+      <div id="cart-discount-row" class="hidden flex justify-between items-center text-xs font-bold text-amber-700 bg-amber-50 p-2.5 rounded-xl border border-amber-200">
+        <span>Desconto Assinante Semanal (10% OFF)</span>
+        <span id="cart-discount" class="font-mono">- R$ 0,00</span>
+      </div>
+      <div class="flex justify-between items-center text-lg font-black text-emerald-950 pt-1 border-t border-stone-200">
+        <span>Total a Pagar no Portão:</span>
+        <span id="cart-total" class="text-2xl text-emerald-700">R$ 0,00</span>
+      </div>
+      <button 
+        id="cart-checkout-btn"
+        onclick="goToCheckoutFromCart()"
+        class="w-full bg-emerald-700 hover:bg-emerald-800 disabled:bg-stone-300 disabled:cursor-not-allowed text-white font-black py-4 px-4 rounded-2xl shadow-lg hover:shadow-xl transition flex items-center justify-center gap-2"
+      >
+        <span>Fechar Pedido da Cesta</span>
+        <span>→</span>
+      </button>
+      <p class="text-[11px] text-center text-stone-500 flex items-center justify-center gap-1 font-medium">
+        <span>🔒</span> Você só paga ao receber os alimentos na sua mão
+      </p>
+    </div>
+  </div>
+
+  <!-- Modal Universal -->
+  <div id="modal-container" class="fixed inset-0 bg-stone-950/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div id="modal-content" class="bg-white rounded-3xl p-6 sm:p-8 max-w-lg w-full shadow-2xl border border-stone-100 max-h-[90vh] overflow-y-auto"></div>
+  </div>
+
+  <!-- Script da Aplicação -->
+  <script>
+    const DEFAULT_KITS = [
+      // 4 KITS DE LEGUMES E VERDURAS
+      {
+        id: 1,
+        category: "Legumes e Verduras",
+        title: "Kit Essencial de Legumes e Verduras",
+        badge: "Mais Pedido",
+        price: 49.90,
+        image_url: "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=800&q=80",
+        items: [
+          { name: "Cenoura Orgânica", quantity: "1 kg" },
+          { name: "Batata Inglesa", quantity: "1.5 kg" },
+          { name: "Abobrinha Italiana", quantity: "800g" },
+          { name: "Tomate Italiano", quantity: "1 kg" },
+          { name: "Alface Americana Fresca", quantity: "1 pé" }
+        ],
+        reviews: [
+          { name: "Mariana S.", rating: 5, comment: "Legumes super crocantes e cheirosos!", date: "10/10/2026" }
+        ]
+      },
+      {
+        id: 2,
+        category: "Legumes e Verduras",
+        title: "Kit Verde & Folhagens da Horta",
+        badge: "Colhido Hoje",
+        price: 42.00,
+        image_url: "https://images.unsplash.com/photo-1576045057995-568f588f82fb?auto=format&fit=crop&w=800&q=80",
+        items: [
+          { name: "Alface Crespa Hidropônica", quantity: "2 pés" },
+          { name: "Rúcula Fresca", quantity: "1 maço" },
+          { name: "Couve Manteiga Caipira", quantity: "2 maços" },
+          { name: "Espinafre Verdinho", quantity: "1 maço" },
+          { name: "Cheiro Verde (Salsa e Cebolinha)", quantity: "1 maço generoso" }
+        ],
+        reviews: [
+          { name: "Clara T.", rating: 5, comment: "As folhas duraram muito mais do que as do mercado comum.", date: "12/10/2026" }
+        ]
+      },
+      {
+        id: 3,
+        category: "Legumes e Verduras",
+        title: "Kit Raízes, Tubérculos & Refogados",
+        badge: "Alta Durabilidade",
+        price: 52.50,
+        image_url: "https://images.unsplash.com/photo-1590779033100-9f60a05a013d?auto=format&fit=crop&w=800&q=80",
+        items: [
+          { name: "Mandioca Mansa Descascada", quantity: "1.5 kg" },
+          { name: "Beterraba Vermelha", quantity: "1 kg" },
+          { name: "Batata Doce Roxa", quantity: "1.2 kg" },
+          { name: "Cebola Roxa e Branca", quantity: "1 kg" },
+          { name: "Chuchu Fresco", quantity: "3 un" }
+        ],
+        reviews: []
+      },
+      {
+        id: 4,
+        category: "Legumes e Verduras",
+        title: "Kit Família de Legumes da Roça",
+        badge: "Fartura",
+        price: 68.00,
+        image_url: "https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?auto=format&fit=crop&w=800&q=80",
+        items: [
+          { name: "Batata Lavada Especial", quantity: "2.5 kg" },
+          { name: "Cenoura Doce", quantity: "1.5 kg" },
+          { name: "Abóbora Cabotiá", quantity: "1/2 banda (~1.2kg)" },
+          { name: "Pimentão Verde e Amarelo", quantity: "4 un" },
+          { name: "Vagem Macarrão", quantity: "500g" },
+          { name: "Alho Roxo Caipira", quantity: "250g" }
+        ],
+        reviews: [
+          { name: "Dona Maria", rating: 5, comment: "Dá para a semana toda de almoço e sopa!", date: "13/10/2026" }
+        ]
+      },
+
+      // 4 KITS DE FRUTAS
+      {
+        id: 5,
+        category: "Frutas",
+        title: "Kit Frutas Tradicionais do Pomar",
+        badge: "Mais Pedido",
+        price: 54.00,
+        image_url: "https://images.unsplash.com/photo-1619566636858-adf3ef46400b?auto=format&fit=crop&w=800&q=80",
+        items: [
+          { name: "Banana Prata de Primeira", quantity: "1 dúzia" },
+          { name: "Maçã Gala Nacional", quantity: "1 kg" },
+          { name: "Mamão Papaia Doce", quantity: "2 un" },
+          { name: "Laranja Pera Doce", quantity: "2 kg" }
+        ],
+        reviews: [
+          { name: "Roberto B.", rating: 5, comment: "Frutas no ponto perfeito para consumo.", date: "11/10/2026" }
+        ]
+      },
+      {
+        id: 6,
+        category: "Frutas",
+        title: "Kit Frutas Tropicais e Refrescantes",
+        badge: "Docinhas",
+        price: 59.90,
+        image_url: "https://images.unsplash.com/photo-1550258987-190a2d41a8ba?auto=format&fit=crop&w=800&q=80",
+        items: [
+          { name: "Abacaxi Pérola Maduro", quantity: "1 un grande" },
+          { name: "Manga Palmer Macia", quantity: "2 un" },
+          { name: "Melão Amarelo Doce", quantity: "1 un" },
+          { name: "Maracujá Azedo p/ Suco", quantity: "500g" }
+        ],
+        reviews: []
+      },
+      {
+        id: 7,
+        category: "Frutas",
+        title: "Kit Frutas & Sucos Naturais",
+        badge: "Vitamina C",
+        price: 48.00,
+        image_url: "https://images.unsplash.com/photo-1582979512210-99b6a53386f9?auto=format&fit=crop&w=800&q=80",
+        items: [
+          { name: "Laranja Bahia / Pera", quantity: "3 kg" },
+          { name: "Limão Taiti Selecionado", quantity: "1 kg" },
+          { name: "Melancia Baby", quantity: "1 un" },
+          { name: "Goiaba Vermelha Caipira", quantity: "1 kg" }
+        ],
+        reviews: [
+          { name: "Lucas P.", rating: 5, comment: "Laranjas cheias de suco, rendeu bastante.", date: "09/10/2026" }
+        ]
+      },
+      {
+        id: 8,
+        category: "Frutas",
+        title: "Kit Seleção Nobre de Frutas",
+        badge: "Premium",
+        price: 74.90,
+        image_url: "https://images.unsplash.com/photo-1546548970-71785318a17b?auto=format&fit=crop&w=800&q=80",
+        items: [
+          { name: "Uva sem semente (Vitória)", quantity: "1 cumbuca (500g)" },
+          { name: "Morangos Frescos da Roça", quantity: "1 caixa (250g)" },
+          { name: "Pêra Williams", quantity: "1 kg" },
+          { name: "Kiwi Nacional", quantity: "500g" },
+          { name: "Ameixa Vermelha", quantity: "500g" }
+        ],
+        reviews: []
+      },
+
+      // 4 KITS MISTOS (FRUTAS, LEGUMES E VERDURAS)
+      {
+        id: 9,
+        category: "Frutas, Legumes e Verduras",
+        title: "Kit Misto Tradicional Da Roça",
+        badge: "Campeão de Vendas",
+        price: 84.90,
+        image_url: "https://images.unsplash.com/photo-1573246123716-6b1782bfc499?auto=format&fit=crop&w=800&q=80",
+        items: [
+          { name: "Ovos Caipiras Genuínos", quantity: "1 dúzia" },
+          { name: "Banana Prata", quantity: "1 dúzia" },
+          { name: "Tomate Italiano", quantity: "1 kg" },
+          { name: "Batata Inglesa", quantity: "1.5 kg" },
+          { name: "Alface Crespa", quantity: "2 pés" },
+          { name: "Cenoura Orgânica", quantity: "800g" }
+        ],
+        reviews: [
+          { name: "Fernanda Costa", rating: 5, comment: "O melhor custo-benefício! Os ovos da roça são inacreditáveis.", date: "14/10/2026" }
+        ]
+      },
+      {
+        id: 10,
+        category: "Frutas, Legumes e Verduras",
+        title: "Cesta Completa da Semana",
+        badge: "Semanal Perfeito",
+        price: 98.00,
+        image_url: "https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=800&q=80",
+        items: [
+          { name: "Maçã Gala e Banana Prata", quantity: "1 kg cada" },
+          { name: "Mamão Formosa", quantity: "1 un média" },
+          { name: "Batata e Cebola", quantity: "1.5 kg cada" },
+          { name: "Abobrinha e Cenoura", quantity: "1 kg cada" },
+          { name: "Couve e Alface Hidropônica", quantity: "1 maço + 1 pé" },
+          { name: "Cheiro Verde Fresco", quantity: "1 maço" }
+        ],
+        reviews: []
+      },
+      {
+        id: 11,
+        category: "Frutas, Legumes e Verduras",
+        title: "Kit Vida Saudável & Fitness",
+        badge: "Nutritivo",
+        price: 89.90,
+        image_url: "https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&w=800&q=80",
+        items: [
+          { name: "Batata Doce Caipira", quantity: "2 kg" },
+          { name: "Brócolis Ninja", quantity: "1 maço grande" },
+          { name: "Espinafre e Rúcula", quantity: "2 maços" },
+          { name: "Abacate Manteiga", quantity: "2 un" },
+          { name: "Bananas e Maçãs", quantity: "1 kg cada" },
+          { name: "Gengibre Natural da Terra", quantity: "200g" }
+        ],
+        reviews: [
+          { name: "Julio C.", rating: 5, comment: "Excelente para quem treina e foca em comida de verdade.", date: "08/10/2026" }
+        ]
+      },
+      {
+        id: 12,
+        category: "Frutas, Legumes e Verduras",
+        title: "Super Banquete Caipira (Fartura)",
+        badge: "Super Cesta",
+        price: 129.00,
+        image_url: "https://images.unsplash.com/photo-1610348725531-843dff563e2c?auto=format&fit=crop&w=800&q=80",
+        items: [
+          { name: "Ovos Vermelhos Caipiras", quantity: "2 dúzias" },
+          { name: "Mandioca de Cozimento Rápido", quantity: "2 kg" },
+          { name: "Laranja Pera para Suco", quantity: "3 kg" },
+          { name: "Mix de Frutas (Banana, Maçã, Mamão)", quantity: "3 kg variados" },
+          { name: "Mix de Legumes (Cenoura, Batata, Chuchu, Tomate)", quantity: "4 kg variados" },
+          { name: "Mix de Verduras (Alface, Couve, Cheiro Verde)", quantity: "4 maços/pés" }
+        ],
+        reviews: [
+          { name: "Beatriz M.", rating: 5, comment: "Fartura total! Chegou tudo intacto e fresquinho.", date: "14/10/2026" }
+        ]
+      }
+    ];
+
+    function initDatabase() {
+      const existing = localStorage.getItem("dr_kits");
+      if (!existing || JSON.parse(existing).length < 12) {
+        localStorage.setItem("dr_kits", JSON.stringify(DEFAULT_KITS));
+      }
+      if (!localStorage.getItem("dr_orders")) {
+        const hoje = new Date();
+        const d = (daysAgo) => {
+          const date = new Date(hoje);
+          date.setDate(date.getDate() - daysAgo);
+          return date.toISOString();
+        };
+
+        const seedOrders = [
+          { id: 1001, itemsDescription: "1x Kit Misto Tradicional Da Roça", clientName: "Carlos Drumond", userEmail: "carlos@email.com", address: "Rua das Flores, 120", paymentMethod: "Pix na Entrega (QR Code)", total: 84.90, status: "Entregue", createdAt: d(0), date: new Date(d(0)).toLocaleDateString("pt-BR") },
+          { id: 1002, itemsDescription: "1x Kit Essencial de Legumes e Verduras", clientName: "Mariana Alencar", userEmail: "mariana@email.com", address: "Av. Paulista, 1500", paymentMethod: "Cartão (Maquininha no portão)", total: 44.91, status: "Entregue", createdAt: d(0), date: new Date(d(0)).toLocaleDateString("pt-BR") },
+          { id: 1003, itemsDescription: "1x Kit Frutas Tradicionais do Pomar", clientName: "Roberto Silveira", userEmail: "roberto@email.com", address: "Rua do Pomar, 45", paymentMethod: "Dinheiro (Precisa de troco)", total: 54.00, status: "Entregue", createdAt: d(2), date: new Date(d(2)).toLocaleDateString("pt-BR") },
+          { id: 1004, itemsDescription: "1x Cesta Completa da Semana", clientName: "Ana Paula Silva", userEmail: "ana@email.com", address: "Travessa Verde, 12", paymentMethod: "Pix na Entrega (QR Code)", total: 98.00, sta
