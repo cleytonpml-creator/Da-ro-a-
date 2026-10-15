@@ -1,22 +1,20 @@
-```html
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>Da Roça - Kits de Alimentos Direto do Produtor</title>
-  <!-- Tailwind CSS via CDN -->
+  <!-- Tailwind CSS via CDN com fallback nativo -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Chart.js para Relatórios Visuais -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
-  <!-- Fontes Google Plus Jakarta Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     body {
-      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
       -webkit-tap-highlight-color: transparent;
+      margin: 0;
+      padding: 0;
     }
     .cart-drawer-enter {
       transform: translateX(100%);
@@ -31,9 +29,9 @@
 
   <!-- Header Fixo -->
   <header class="bg-white/95 backdrop-blur shadow-sm sticky top-0 z-40 border-b border-stone-200">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-3">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-2 sm:gap-3">
       <div class="flex items-center gap-2.5 cursor-pointer group flex-shrink-0" onclick="navigate('store')">
-        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-600 to-amber-600 flex items-center justify-center text-white font-extrabold text-xl shadow-md group-hover:scale-105 transition-transform">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-600 to-amber-600 flex items-center justify-center text-white font-extrabold text-xl shadow-md">
           🧺
         </div>
         <div>
@@ -45,7 +43,17 @@
       </div>
 
       <!-- Ações de Navegação e Carrinho -->
-      <nav id="nav-actions" class="flex items-center gap-2 sm:gap-4"></nav>
+      <nav id="nav-actions" class="flex items-center gap-1.5 sm:gap-3">
+        <!-- Botão Cesta estático garantido caso demore renderizar -->
+        <button 
+          onclick="toggleCartDrawer(true)" 
+          class="relative bg-emerald-700 hover:bg-emerald-800 text-white px-3 sm:px-4 py-2 rounded-xl font-black text-xs sm:text-sm flex items-center gap-1.5 shadow-sm transition"
+        >
+          <span>🧺</span>
+          <span class="hidden sm:inline">Minha Cesta</span>
+          <span id="cart-badge-count" class="hidden bg-amber-400 text-emerald-950 text-[10px] sm:text-[11px] font-black px-1.5 py-0.2 rounded-full shadow">0</span>
+        </button>
+      </nav>
     </div>
   </header>
 
@@ -57,7 +65,7 @@
       class="w-full h-full object-cover object-center"
       onerror="this.src='https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=1600&q=80'"
     />
-    <div class="absolute inset-0 bg-gradient-to-r from-emerald-950/90 via-emerald-950/65 to-emerald-950/40 flex items-center">
+    <div class="absolute inset-0 bg-gradient-to-r from-emerald-950/90 via-emerald-950/70 to-emerald-950/40 flex items-center">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full text-white">
         <div class="max-w-2xl">
           <span class="inline-flex items-center gap-1.5 bg-amber-500 text-emerald-950 font-black text-[10px] sm:text-xs uppercase px-2.5 py-1 rounded-full shadow mb-2 tracking-wider">
@@ -105,13 +113,7 @@
 
   <!-- Container Principal do App -->
   <main class="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8">
-    <div id="app-container" class="min-h-[400px]">
-      <!-- Fallback de carregamento visual -->
-      <div class="text-center py-16 text-stone-400">
-        <span class="text-4xl block animate-bounce mb-2">🧺</span>
-        <p class="font-bold text-sm text-stone-600">Carregando as cestas frescas da horta...</p>
-      </div>
-    </div>
+    <div id="app-container" class="min-h-[400px]"></div>
   </main>
 
   <!-- Rodapé -->
@@ -181,8 +183,9 @@
     <div id="modal-content" class="bg-white rounded-3xl p-6 sm:p-8 max-w-lg w-full shadow-2xl border border-stone-100 max-h-[90vh] overflow-y-auto"></div>
   </div>
 
-  <!-- Script Principal da Aplicação -->
+  <!-- SCRIPT NATIVO ROBUSTO (SEM DEPENDÊNCIAS EXTERNAS QUE POSSAM TRAVAR O SITE) -->
   <script>
+    // 1. BANCO DE DADOS PADRÃO DE KITS
     const DEFAULT_KITS = [
       // 4 KITS DE LEGUMES E VERDURAS
       {
@@ -199,9 +202,7 @@
           { name: "Tomate Italiano", quantity: "1 kg" },
           { name: "Alface Americana Fresca", quantity: "1 pé" }
         ],
-        reviews: [
-          { name: "Mariana S.", rating: 5, comment: "Legumes super crocantes e cheirosos!", date: "10/10/2026" }
-        ]
+        reviews: [{ name: "Mariana S.", rating: 5, comment: "Legumes super crocantes e cheirosos!", date: "10/10/2026" }]
       },
       {
         id: 2,
@@ -215,11 +216,9 @@
           { name: "Rúcula Fresca", quantity: "1 maço" },
           { name: "Couve Manteiga Caipira", quantity: "2 maços" },
           { name: "Espinafre Verdinho", quantity: "1 maço" },
-          { name: "Cheiro Verde (Salsa e Cebolinha)", quantity: "1 maço generoso" }
+          { name: "Cheiro Verde (Salsa e Cebolinha)", quantity: "1 maço" }
         ],
-        reviews: [
-          { name: "Clara T.", rating: 5, comment: "As folhas duraram muito mais do que as do mercado comum.", date: "12/10/2026" }
-        ]
+        reviews: [{ name: "Clara T.", rating: 5, comment: "Folhas duram muito mais que as de mercado.", date: "12/10/2026" }]
       },
       {
         id: 3,
@@ -247,14 +246,12 @@
         items: [
           { name: "Batata Lavada Especial", quantity: "2.5 kg" },
           { name: "Cenoura Doce", quantity: "1.5 kg" },
-          { name: "Abóbora Cabotiá", quantity: "1/2 banda (~1.2kg)" },
+          { name: "Abóbora Cabotiá", quantity: "1/2 banda" },
           { name: "Pimentão Verde e Amarelo", quantity: "4 un" },
           { name: "Vagem Macarrão", quantity: "500g" },
           { name: "Alho Roxo Caipira", quantity: "250g" }
         ],
-        reviews: [
-          { name: "Dona Maria", rating: 5, comment: "Dá para a semana toda de almoço e sopa!", date: "13/10/2026" }
-        ]
+        reviews: [{ name: "Dona Maria", rating: 5, comment: "Dá para a semana toda!", date: "13/10/2026" }]
       },
 
       // 4 KITS DE FRUTAS
@@ -271,9 +268,7 @@
           { name: "Mamão Papaia Doce", quantity: "2 un" },
           { name: "Laranja Pera Doce", quantity: "2 kg" }
         ],
-        reviews: [
-          { name: "Roberto B.", rating: 5, comment: "Frutas no ponto perfeito para consumo.", date: "11/10/2026" }
-        ]
+        reviews: [{ name: "Roberto B.", rating: 5, comment: "Frutas no ponto perfeito.", date: "11/10/2026" }]
       },
       {
         id: 6,
@@ -303,9 +298,7 @@
           { name: "Melancia Baby", quantity: "1 un" },
           { name: "Goiaba Vermelha Caipira", quantity: "1 kg" }
         ],
-        reviews: [
-          { name: "Lucas P.", rating: 5, comment: "Laranjas cheias de suco, rendeu bastante.", date: "09/10/2026" }
-        ]
+        reviews: []
       },
       {
         id: 8,
@@ -315,8 +308,8 @@
         price: 74.90,
         image_url: "https://images.unsplash.com/photo-1546548970-71785318a17b?auto=format&fit=crop&w=800&q=80",
         items: [
-          { name: "Uva sem semente (Vitória)", quantity: "1 cumbuca (500g)" },
-          { name: "Morangos Frescos da Roça", quantity: "1 caixa (250g)" },
+          { name: "Uva sem semente", quantity: "1 cumbuca (500g)" },
+          { name: "Morangos Frescos", quantity: "1 caixa (250g)" },
           { name: "Pêra Williams", quantity: "1 kg" },
           { name: "Kiwi Nacional", quantity: "500g" },
           { name: "Ameixa Vermelha", quantity: "500g" }
@@ -340,9 +333,7 @@
           { name: "Alface Crespa", quantity: "2 pés" },
           { name: "Cenoura Orgânica", quantity: "800g" }
         ],
-        reviews: [
-          { name: "Fernanda Costa", rating: 5, comment: "O melhor custo-benefício! Os ovos da roça são inacreditáveis.", date: "14/10/2026" }
-        ]
+        reviews: [{ name: "Fernanda Costa", rating: 5, comment: "Os ovos caipiras são incríveis!", date: "14/10/2026" }]
       },
       {
         id: 10,
@@ -353,11 +344,10 @@
         image_url: "https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=800&q=80",
         items: [
           { name: "Maçã Gala e Banana Prata", quantity: "1 kg cada" },
-          { name: "Mamão Formosa", quantity: "1 un média" },
+          { name: "Mamão Formosa", quantity: "1 un" },
           { name: "Batata e Cebola", quantity: "1.5 kg cada" },
           { name: "Abobrinha e Cenoura", quantity: "1 kg cada" },
-          { name: "Couve e Alface Hidropônica", quantity: "1 maço + 1 pé" },
-          { name: "Cheiro Verde Fresco", quantity: "1 maço" }
+          { name: "Couve e Alface", quantity: "1 maço + 1 pé" }
         ],
         reviews: []
       },
@@ -370,15 +360,12 @@
         image_url: "https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&w=800&q=80",
         items: [
           { name: "Batata Doce Caipira", quantity: "2 kg" },
-          { name: "Brócolis Ninja", quantity: "1 maço grande" },
+          { name: "Brócolis Ninja", quantity: "1 maço" },
           { name: "Espinafre e Rúcula", quantity: "2 maços" },
           { name: "Abacate Manteiga", quantity: "2 un" },
-          { name: "Bananas e Maçãs", quantity: "1 kg cada" },
-          { name: "Gengibre Natural da Terra", quantity: "200g" }
+          { name: "Gengibre Natural", quantity: "200g" }
         ],
-        reviews: [
-          { name: "Julio C.", rating: 5, comment: "Excelente para quem treina e foca em comida de verdade.", date: "08/10/2026" }
-        ]
+        reviews: [{ name: "Julio C.", rating: 5, comment: "Perfeito para quem treina.", date: "08/10/2026" }]
       },
       {
         id: 12,
@@ -388,19 +375,17 @@
         price: 129.00,
         image_url: "https://images.unsplash.com/photo-1610348725531-843dff563e2c?auto=format&fit=crop&w=800&q=80",
         items: [
-          { name: "Ovos Vermelhos Caipiras", quantity: "2 dúzias" },
+          { name: "Ovos Caipiras Vermelhos", quantity: "2 dúzias" },
           { name: "Mandioca de Cozimento Rápido", quantity: "2 kg" },
-          { name: "Laranja Pera para Suco", quantity: "3 kg" },
+          { name: "Laranja Pera Suco", quantity: "3 kg" },
           { name: "Mix de Frutas (Banana, Maçã, Mamão)", quantity: "3 kg variados" },
-          { name: "Mix de Legumes (Cenoura, Batata, Chuchu, Tomate)", quantity: "4 kg variados" },
-          { name: "Mix de Verduras (Alface, Couve, Cheiro Verde)", quantity: "4 maços/pés" }
+          { name: "Mix de Legumes e Verduras", quantity: "5 kg variados" }
         ],
-        reviews: [
-          { name: "Beatriz M.", rating: 5, comment: "Fartura total! Chegou tudo intacto e fresquinho.", date: "14/10/2026" }
-        ]
+        reviews: [{ name: "Beatriz M.", rating: 5, comment: "Fartura total! Chegou tudo fresquinho.", date: "14/10/2026" }]
       }
     ];
 
+    // Armazenamento Local Seguro
     function safeGet(key, defaultVal) {
       try {
         const item = localStorage.getItem(key);
@@ -413,23 +398,23 @@
     function safeSet(key, val) {
       try {
         localStorage.setItem(key, JSON.stringify(val));
-      } catch (e) {
-        console.warn("LocalStorage indisponível:", e);
-      }
+      } catch (e) {}
     }
 
+    // Inicialização do Banco
     function initDatabase() {
       const existing = safeGet("dr_kits", null);
-      if (!existing || existing.length < 12) {
+      if (!existing || !Array.isArray(existing) || existing.length === 0) {
         safeSet("dr_kits", DEFAULT_KITS);
       }
       if (!safeGet("dr_orders", null)) {
-        const hoje = new Date();
-        const d = (daysAgo) => {
-          const date = new Date(hoje);
-          date.setDate(date.getDate() - daysAgo);
-          return date.toISOString();
-        };
-
+        const hoje = new Date().toLocaleDateString("pt-BR");
         const seedOrders = [
-          { id: 1001, itemsDescription: "1x Kit Misto Tradicional Da Roça", clientName: "Carlos Drumond", userEmail: "carlos@email.com", address: "Rua das Flores, 120", paymentMethod: "Pix na Entrega (QR Code)", total: 84.90, status: "Entregue", cr
+          { id: 1001, itemsDescription: "1x Kit Misto Tradicional Da Roça", clientName: "Carlos Drumond", userEmail: "carlos@email.com", address: "Rua das Flores, 120", paymentMethod: "Pix na Entrega (QR Code)", total: 84.90, status: "Entregue", date: hoje },
+          { id: 1002, itemsDescription: "1x Kit Essencial de Legumes e Verduras", clientName: "Mariana Alencar", userEmail: "mariana@email.com", address: "Av. Paulista, 1500", paymentMethod: "Cartão (Maquininha no portão)", total: 44.91, status: "Entregue", date: hoje }
+        ];
+        safeSet("dr_orders", seedOrders);
+      }
+      if (!safeGet("dr_users", null)) {
+        const initialUsers = [
+          { id: 1, name: "Produtor Tião (Da Roça)", email: "produtor@daroca.com"
