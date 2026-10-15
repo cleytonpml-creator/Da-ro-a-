@@ -1,0 +1,2022 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Da Roça - Kits de Alimentos Direto do Produtor</title>
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Chart.js para Relatórios Visuais -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Fontes Google Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .line-clamp-2 {
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .cart-drawer-enter {
+      transform: translateX(100%);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .cart-drawer-open {
+      transform: translateX(0);
+    }
+  </style>
+</head>
+<body class="bg-stone-50 text-stone-800 min-h-screen flex flex-col antialiased selection:bg-emerald-500 selection:text-white">
+
+  <!-- Header Fixo -->
+  <header class="bg-white/95 backdrop-blur shadow-sm sticky top-0 z-40 border-b border-stone-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+      <div class="flex items-center gap-3 cursor-pointer group flex-shrink-0" onclick="navigate('store')">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-600 to-amber-600 flex items-center justify-center text-white font-extrabold text-xl shadow-md group-hover:scale-105 transition-transform">
+          🧺
+        </div>
+        <div>
+          <span class="text-xl font-black text-emerald-950 tracking-tight block leading-tight flex items-center gap-1.5">
+            Da Roça <span class="text-[10px] bg-emerald-100 text-emerald-800 font-extrabold px-1.5 py-0.5 rounded-full border border-emerald-300">100% Campo</span>
+          </span>
+          <span class="text-xs text-stone-500 font-medium hidden sm:inline">Frescor Familiar Sem Intermediários</span>
+        </div>
+      </div>
+
+      <nav id="nav-actions" class="flex items-center gap-2 sm:gap-4"></nav>
+    </div>
+  </header>
+
+  <!-- Banner Panorâmico -->
+  <div class="relative w-full h-64 sm:h-80 overflow-hidden shadow-md">
+    <img 
+      src="https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=2000&q=85" 
+      alt="Plantação e colheita de alimentos frescos da roça" 
+      class="w-full h-full object-cover object-center"
+      onerror="this.src='https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=1600&q=80'"
+    />
+    <div class="absolute inset-0 bg-gradient-to-r from-emerald-950/90 via-emerald-950/60 to-transparent flex items-center">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full text-white">
+        <div class="max-w-2xl">
+          <span class="inline-flex items-center gap-2 bg-amber-500 text-emerald-950 font-black text-xs uppercase px-3 py-1 rounded-full shadow mb-2 tracking-wider">
+            <span>🌱</span> Colheita Familiar Matinal
+          </span>
+          <h1 class="text-2xl sm:text-4xl font-black leading-tight drop-shadow-md tracking-tight">
+            Alimentos Colhidos no Ponto Certo para sua Mesa
+          </h1>
+          <p class="text-emerald-100 text-xs sm:text-sm mt-2 leading-relaxed drop-shadow max-w-xl">
+            Legumes, folhas e frutas sem atravessadores. Escolha seus kits e pague diretamente ao entregador na sua porta.
+          </p>
+          <div class="mt-4 flex flex-wrap gap-2 text-xs font-bold">
+            <span class="bg-white/20 backdrop-blur-md px-3 py-1 rounded-xl border border-white/30 flex items-center gap-1.5">
+              ✓ Sem agrotóxicos agressivos
+            </span>
+            <span class="bg-white/20 backdrop-blur-md px-3 py-1 rounded-xl border border-white/30 flex items-center gap-1.5">
+              ✓ Pagamento Seguro no Portão
+            </span>
+            <span class="bg-white/20 backdrop-blur-md px-3 py-1 rounded-xl border border-white/30 flex items-center gap-1.5">
+              ✓ Entrega em até 24h
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Faixa de Destaques -->
+  <div class="bg-emerald-900 text-emerald-100 py-3 border-y border-emerald-800 text-xs font-semibold">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-wrap items-center justify-around gap-4 text-center">
+      <div class="flex items-center gap-2">
+        <span class="text-base">👩‍🌾</span>
+        <span>Apoiando mais de <strong>40 pequenos produtores</strong></span>
+      </div>
+      <div class="hidden sm:flex items-center gap-2">
+        <span class="text-base">🧺</span>
+        <span>Mais de <strong>2.800 cestas</strong> entregues com frescor</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="text-base">⭐</span>
+        <span>Satisfação <strong>4.9 / 5.0</strong> avaliada pelos clientes</span>
+      </div>
+    </div>
+  </div>
+
+  <main class="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8">
+    <div id="app-container"></div>
+  </main>
+
+  <!-- Rodapé -->
+  <footer class="bg-white border-t border-stone-200 py-8 text-xs text-stone-500 mt-auto">
+    <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-2">
+        <span class="text-xl">🧺</span>
+        <div>
+          <p class="font-bold text-stone-800 text-sm">Da Roça • Hortifrúti Familiar</p>
+          <p>© 2026 Da Roça • Sustentabilidade, saúde e preço justo da terra ao seu lar.</p>
+        </div>
+      </div>
+      <div class="flex flex-wrap gap-4 font-semibold text-stone-700">
+        <span>⚡ Pague na Entrega (Pix, Maquininha ou Dinheiro)</span>
+        <span>🌱 Embalagens Ecológicas</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Gaveta Lateral do Carrinho (Slide-over Cart) -->
+  <div id="cart-drawer-backdrop" class="fixed inset-0 bg-stone-950/60 backdrop-blur-sm z-50 hidden transition-opacity duration-300" onclick="toggleCartDrawer(false)"></div>
+  <div id="cart-drawer" class="fixed top-0 right-0 h-full w-full max-w-md bg-white shadow-2xl z-50 cart-drawer-enter flex flex-col transition-transform duration-300">
+    <div class="p-5 border-b border-stone-200 flex items-center justify-between bg-stone-50">
+      <div class="flex items-center gap-2">
+        <span class="text-2xl">🧺</span>
+        <div>
+          <h3 class="font-black text-emerald-950 text-lg">Sua Cesta Da Roça</h3>
+          <span id="cart-item-count-label" class="text-xs text-stone-500 font-bold">0 itens selecionados</span>
+        </div>
+      </div>
+      <button onclick="toggleCartDrawer(false)" class="w-8 h-8 rounded-full bg-stone-200/80 hover:bg-stone-300 flex items-center justify-center font-bold text-stone-600 text-lg transition">
+        &times;
+      </button>
+    </div>
+
+    <div id="cart-items-container" class="flex-1 overflow-y-auto p-5 space-y-4"></div>
+
+    <div class="p-5 border-t border-stone-200 bg-stone-50 space-y-3">
+      <div class="flex justify-between items-center text-sm font-semibold text-stone-600">
+        <span>Subtotal</span>
+        <span id="cart-subtotal" class="font-mono">R$ 0,00</span>
+      </div>
+      <div id="cart-discount-row" class="hidden flex justify-between items-center text-xs font-bold text-amber-700 bg-amber-50 p-2.5 rounded-xl border border-amber-200">
+        <span>Desconto Assinante Semanal (10% OFF)</span>
+        <span id="cart-discount" class="font-mono">- R$ 0,00</span>
+      </div>
+      <div class="flex justify-between items-center text-lg font-black text-emerald-950 pt-1 border-t border-stone-200">
+        <span>Total a Pagar no Portão:</span>
+        <span id="cart-total" class="text-2xl text-emerald-700">R$ 0,00</span>
+      </div>
+      <button 
+        id="cart-checkout-btn"
+        onclick="goToCheckoutFromCart()"
+        class="w-full bg-emerald-700 hover:bg-emerald-800 disabled:bg-stone-300 disabled:cursor-not-allowed text-white font-black py-4 px-4 rounded-2xl shadow-lg hover:shadow-xl transition flex items-center justify-center gap-2"
+      >
+        <span>Fechar Pedido da Cesta</span>
+        <span>→</span>
+      </button>
+      <p class="text-[11px] text-center text-stone-500 flex items-center justify-center gap-1 font-medium">
+        <span>🔒</span> Você só paga ao receber os alimentos na sua mão
+      </p>
+    </div>
+  </div>
+
+  <!-- Modal Universal -->
+  <div id="modal-container" class="fixed inset-0 bg-stone-950/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div id="modal-content" class="bg-white rounded-3xl p-6 sm:p-8 max-w-lg w-full shadow-2xl border border-stone-100 max-h-[90vh] overflow-y-auto"></div>
+  </div>
+
+  <!-- Script da Aplicação -->
+  <script>
+    const DEFAULT_KITS = [
+      // 4 KITS DE LEGUMES E VERDURAS
+      {
+        id: 1,
+        category: "Legumes e Verduras",
+        title: "Kit Essencial de Legumes e Verduras",
+        badge: "Mais Pedido",
+        price: 49.90,
+        image_url: "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=800&q=80",
+        items: [
+          { name: "Cenoura Orgânica", quantity: "1 kg" },
+          { name: "Batata Inglesa", quantity: "1.5 kg" },
+          { name: "Abobrinha Italiana", quantity: "800g" },
+          { name: "Tomate Italiano", quantity: "1 kg" },
+          { name: "Alface Americana Fresca", quantity: "1 pé" }
+        ],
+        reviews: [
+          { name: "Mariana S.", rating: 5, comment: "Legumes super crocantes e cheirosos!", date: "10/10/2026" }
+        ]
+      },
+      {
+        id: 2,
+        category: "Legumes e Verduras",
+        title: "Kit Verde & Folhagens da Horta",
+        badge: "Colhido Hoje",
+        price: 42.00,
+        image_url: "https://images.unsplash.com/photo-1576045057995-568f588f82fb?auto=format&fit=crop&w=800&q=80",
+        items: [
+          { name: "Alface Crespa Hidropônica", quantity: "2 pés" },
+          { name: "Rúcula Fresca", quantity: "1 maço" },
+          { name: "Couve Manteiga Caipira", quantity: "2 maços" },
+          { name: "Espinafre Verdinho", quantity: "1 maço" },
+          { name: "Cheiro Verde (Salsa e Cebolinha)", quantity: "1 maço generoso" }
+        ],
+        reviews: [
+          { name: "Clara T.", rating: 5, comment: "As folhas duraram muito mais do que as do mercado comum.", date: "12/10/2026" }
+        ]
+      },
+      {
+        id: 3,
+        category: "Legumes e Verduras",
+        title: "Kit Raízes, Tubérculos & Refogados",
+        badge: "Alta Durabilidade",
+        price: 52.50,
+        image_url: "https://images.unsplash.com/photo-1590779033100-9f60a05a013d?auto=format&fit=crop&w=800&q=80",
+        items: [
+          { name: "Mandioca Mansa Descascada", quantity: "1.5 kg" },
+          { name: "Beterraba Vermelha", quantity: "1 kg" },
+          { name: "Batata Doce Roxa", quantity: "1.2 kg" },
+          { name: "Cebola Roxa e Branca", quantity: "1 kg" },
+          { name: "Chuchu Fresco", quantity: "3 un" }
+        ],
+        reviews: []
+      },
+      {
+        id: 4,
+        category: "Legumes e Verduras",
+        title: "Kit Família de Legumes da Roça",
+        badge: "Fartura",
+        price: 68.00,
+        image_url: "https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?auto=format&fit=crop&w=800&q=80",
+        items: [
+          { name: "Batata Lavada Especial", quantity: "2.5 kg" },
+          { name: "Cenoura Doce", quantity: "1.5 kg" },
+          { name: "Abóbora Cabotiá", quantity: "1/2 banda (~1.2kg)" },
+          { name: "Pimentão Verde e Amarelo", quantity: "4 un" },
+          { name: "Vagem Macarrão", quantity: "500g" },
+          { name: "Alho Roxo Caipira", quantity: "250g" }
+        ],
+        reviews: [
+          { name: "Dona Maria", rating: 5, comment: "Dá para a semana toda de almoço e sopa!", date: "13/10/2026" }
+        ]
+      },
+
+      // 4 KITS DE FRUTAS
+      {
+        id: 5,
+        category: "Frutas",
+        title: "Kit Frutas Tradicionais do Pomar",
+        badge: "Mais Pedido",
+        price: 54.00,
+        image_url: "https://images.unsplash.com/photo-1619566636858-adf3ef46400b?auto=format&fit=crop&w=800&q=80",
+        items: [
+          { name: "Banana Prata de Primeira", quantity: "1 dúzia" },
+          { name: "Maçã Gala Nacional", quantity: "1 kg" },
+          { name: "Mamão Papaia Doce", quantity: "2 un" },
+          { name: "Laranja Pera Doce", quantity: "2 kg" }
+        ],
+        reviews: [
+          { name: "Roberto B.", rating: 5, comment: "Frutas no ponto perfeito para consumo.", date: "11/10/2026" }
+        ]
+      },
+      {
+        id: 6,
+        category: "Frutas",
+        title: "Kit Frutas Tropicais e Refrescantes",
+        badge: "Docinhas",
+        price: 59.90,
+        image_url: "https://images.unsplash.com/photo-1550258987-190a2d41a8ba?auto=format&fit=crop&w=800&q=80",
+        items: [
+          { name: "Abacaxi Pérola Maduro", quantity: "1 un grande" },
+          { name: "Manga Palmer Macia", quantity: "2 un" },
+          { name: "Melão Amarelo Doce", quantity: "1 un" },
+          { name: "Maracujá Azedo p/ Suco", quantity: "500g" }
+        ],
+        reviews: []
+      },
+      {
+        id: 7,
+        category: "Frutas",
+        title: "Kit Frutas & Sucos Naturais",
+        badge: "Vitamina C",
+        price: 48.00,
+        image_url: "https://images.unsplash.com/photo-1582979512210-99b6a53386f9?auto=format&fit=crop&w=800&q=80",
+        items: [
+          { name: "Laranja Bahia / Pera", quantity: "3 kg" },
+          { name: "Limão Taiti Selecionado", quantity: "1 kg" },
+          { name: "Melancia Baby", quantity: "1 un" },
+          { name: "Goiaba Vermelha Caipira", quantity: "1 kg" }
+        ],
+        reviews: [
+          { name: "Lucas P.", rating: 5, comment: "Laranjas cheias de suco, rendeu bastante.", date: "09/10/2026" }
+        ]
+      },
+      {
+        id: 8,
+        category: "Frutas",
+        title: "Kit Seleção Nobre de Frutas",
+        badge: "Premium",
+        price: 74.90,
+        image_url: "https://images.unsplash.com/photo-1546548970-71785318a17b?auto=format&fit=crop&w=800&q=80",
+        items: [
+          { name: "Uva sem semente (Vitória)", quantity: "1 cumbuca (500g)" },
+          { name: "Morangos Frescos da Roça", quantity: "1 caixa (250g)" },
+          { name: "Pêra Williams", quantity: "1 kg" },
+          { name: "Kiwi Nacional", quantity: "500g" },
+          { name: "Ameixa Vermelha", quantity: "500g" }
+        ],
+        reviews: []
+      },
+
+      // 4 KITS MISTOS (FRUTAS, LEGUMES E VERDURAS)
+      {
+        id: 9,
+        category: "Frutas, Legumes e Verduras",
+        title: "Kit Misto Tradicional Da Roça",
+        badge: "Campeão de Vendas",
+        price: 84.90,
+        image_url: "https://images.unsplash.com/photo-1573246123716-6b1782bfc499?auto=format&fit=crop&w=800&q=80",
+        items: [
+          { name: "Ovos Caipiras Genuínos", quantity: "1 dúzia" },
+          { name: "Banana Prata", quantity: "1 dúzia" },
+          { name: "Tomate Italiano", quantity: "1 kg" },
+          { name: "Batata Inglesa", quantity: "1.5 kg" },
+          { name: "Alface Crespa", quantity: "2 pés" },
+          { name: "Cenoura Orgânica", quantity: "800g" }
+        ],
+        reviews: [
+          { name: "Fernanda Costa", rating: 5, comment: "O melhor custo-benefício! Os ovos da roça são inacreditáveis.", date: "14/10/2026" }
+        ]
+      },
+      {
+        id: 10,
+        category: "Frutas, Legumes e Verduras",
+        title: "Cesta Completa da Semana",
+        badge: "Semanal Perfeito",
+        price: 98.00,
+        image_url: "https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=800&q=80",
+        items: [
+          { name: "Maçã Gala e Banana Prata", quantity: "1 kg cada" },
+          { name: "Mamão Formosa", quantity: "1 un média" },
+          { name: "Batata e Cebola", quantity: "1.5 kg cada" },
+          { name: "Abobrinha e Cenoura", quantity: "1 kg cada" },
+          { name: "Couve e Alface Hidropônica", quantity: "1 maço + 1 pé" },
+          { name: "Cheiro Verde Fresco", quantity: "1 maço" }
+        ],
+        reviews: []
+      },
+      {
+        id: 11,
+        category: "Frutas, Legumes e Verduras",
+        title: "Kit Vida Saudável & Fitness",
+        badge: "Nutritivo",
+        price: 89.90,
+        image_url: "https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&w=800&q=80",
+        items: [
+          { name: "Batata Doce Caipira", quantity: "2 kg" },
+          { name: "Brócolis Ninja", quantity: "1 maço grande" },
+          { name: "Espinafre e Rúcula", quantity: "2 maços" },
+          { name: "Abacate Manteiga", quantity: "2 un" },
+          { name: "Bananas e Maçãs", quantity: "1 kg cada" },
+          { name: "Gengibre Natural da Terra", quantity: "200g" }
+        ],
+        reviews: [
+          { name: "Julio C.", rating: 5, comment: "Excelente para quem treina e foca em comida de verdade.", date: "08/10/2026" }
+        ]
+      },
+      {
+        id: 12,
+        category: "Frutas, Legumes e Verduras",
+        title: "Super Banquete Caipira (Fartura)",
+        badge: "Super Cesta",
+        price: 129.00,
+        image_url: "https://images.unsplash.com/photo-1610348725531-843dff563e2c?auto=format&fit=crop&w=800&q=80",
+        items: [
+          { name: "Ovos Vermelhos Caipiras", quantity: "2 dúzias" },
+          { name: "Mandioca de Cozimento Rápido", quantity: "2 kg" },
+          { name: "Laranja Pera para Suco", quantity: "3 kg" },
+          { name: "Mix de Frutas (Banana, Maçã, Mamão)", quantity: "3 kg variados" },
+          { name: "Mix de Legumes (Cenoura, Batata, Chuchu, Tomate)", quantity: "4 kg variados" },
+          { name: "Mix de Verduras (Alface, Couve, Cheiro Verde)", quantity: "4 maços/pés" }
+        ],
+        reviews: [
+          { name: "Beatriz M.", rating: 5, comment: "Fartura total! Chegou tudo intacto e fresquinho.", date: "14/10/2026" }
+        ]
+      }
+    ];
+
+    function initDatabase() {
+      const existing = localStorage.getItem("dr_kits");
+      if (!existing || JSON.parse(existing).length < 12) {
+        localStorage.setItem("dr_kits", JSON.stringify(DEFAULT_KITS));
+      }
+      if (!localStorage.getItem("dr_orders")) {
+        const hoje = new Date();
+        const d = (daysAgo) => {
+          const date = new Date(hoje);
+          date.setDate(date.getDate() - daysAgo);
+          return date.toISOString();
+        };
+
+        const seedOrders = [
+          { id: 1001, itemsDescription: "1x Kit Misto Tradicional Da Roça", clientName: "Carlos Drumond", userEmail: "carlos@email.com", address: "Rua das Flores, 120", paymentMethod: "Pix na Entrega (QR Code)", total: 84.90, status: "Entregue", createdAt: d(0), date: new Date(d(0)).toLocaleDateString("pt-BR") },
+          { id: 1002, itemsDescription: "1x Kit Essencial de Legumes e Verduras", clientName: "Mariana Alencar", userEmail: "mariana@email.com", address: "Av. Paulista, 1500", paymentMethod: "Cartão (Maquininha no portão)", total: 44.91, status: "Entregue", createdAt: d(0), date: new Date(d(0)).toLocaleDateString("pt-BR") },
+          { id: 1003, itemsDescription: "1x Kit Frutas Tradicionais do Pomar", clientName: "Roberto Silveira", userEmail: "roberto@email.com", address: "Rua do Pomar, 45", paymentMethod: "Dinheiro (Precisa de troco)", total: 54.00, status: "Entregue", createdAt: d(2), date: new Date(d(2)).toLocaleDateString("pt-BR") },
+          { id: 1004, itemsDescription: "1x Cesta Completa da Semana", clientName: "Ana Paula Silva", userEmail: "ana@email.com", address: "Travessa Verde, 12", paymentMethod: "Pix na Entrega (QR Code)", total: 98.00, status: "Saiu para Entrega", createdAt: d(5), date: new Date(d(5)).toLocaleDateString("pt-BR") },
+          { id: 1005, itemsDescription: "1x Kit Misto Tradicional Da Roça", clientName: "Fernanda Costa", userEmail: "fernanda@email.com", address: "Condomínio Fazenda, 8", paymentMethod: "Pix na Entrega (QR Code)", total: 76.41, status: "Entregue", createdAt: d(12), date: new Date(d(12)).toLocaleDateString("pt-BR") },
+          { id: 1006, itemsDescription: "1x Kit Família de Legumes da Roça", clientName: "Dona Maria", userEmail: "maria@email.com", address: "Rua Caipira, 303", paymentMethod: "Dinheiro (Precisa de troco)", total: 68.00, status: "Entregue", createdAt: d(20), date: new Date(d(20)).toLocaleDateString("pt-BR") },
+          { id: 1007, itemsDescription: "1x Super Banquete Caipira (Fartura)", clientName: "Pedro Mendes", userEmail: "pedro@email.com", address: "Estrada da Mata, 90", paymentMethod: "Cartão (Maquininha no portão)", total: 129.00, status: "Entregue", createdAt: d(28), date: new Date(d(28)).toLocaleDateString("pt-BR") }
+        ];
+        localStorage.setItem("dr_orders", JSON.stringify(seedOrders));
+      }
+      if (!localStorage.getItem("dr_users")) {
+        const initialUsers = [
+          { id: 1, name: "Produtor Tião (Da Roça)", email: "produtor@daroca.com", pass: "123456", role: "supplier", is_subscriber: false },
+          { id: 2, name: "Mariana Alencar", email: "mariana@email.com", pass: "123456", role: "customer", is_subscriber: true }
+        ];
+        localStorage.setItem("dr_users", JSON.stringify(initialUsers));
+      }
+    }
+    initDatabase();
+
+    const getKits = () => JSON.parse(localStorage.getItem("dr_kits") || "[]");
+    const saveKits = (k) => localStorage.setItem("dr_kits", JSON.stringify(k));
+    const getOrders = () => JSON.parse(localStorage.getItem("dr_orders") || "[]");
+    const saveOrders = (o) => localStorage.setItem("dr_orders", JSON.stringify(o));
+    const getUsers = () => JSON.parse(localStorage.getItem("dr_users") || "[]");
+    const saveUsers = (u) => localStorage.setItem("dr_users", JSON.stringify(u));
+    const getCart = () => JSON.parse(localStorage.getItem("dr_cart") || "[]");
+    const saveCart = (c) => {
+      localStorage.setItem("dr_cart", JSON.stringify(c));
+      updateCartBadge();
+    };
+
+    let currentUser = JSON.parse(localStorage.getItem("dr_session") || "null");
+    let isSubscriberDiscountActive = currentUser ? !!currentUser.is_subscriber : false;
+    let currentRoute = "store";
+    let currentCategoryFilter = "all";
+    let searchQuery = "";
+    let supplierPeriodFilter = "month";
+    let salesChartInstance = null;
+
+    function setSession(user) {
+      currentUser = user;
+      localStorage.setItem("dr_session", JSON.stringify(user));
+      isSubscriberDiscountActive = user ? !!user.is_subscriber : false;
+      renderNavbar();
+    }
+
+    function clearSession() {
+      currentUser = null;
+      localStorage.removeItem("dr_session");
+      isSubscriberDiscountActive = false;
+      renderNavbar();
+      navigate("store");
+    }
+
+    function showModal(html) {
+      const modal = document.getElementById("modal-container");
+      const content = document.getElementById("modal-content");
+      if (modal && content) {
+        content.innerHTML = html;
+        modal.classList.remove("hidden");
+      }
+    }
+
+    function closeModal() {
+      const modal = document.getElementById("modal-container");
+      if (modal) {
+        modal.classList.add("hidden");
+      }
+    }
+
+    function showAlert(title, message, isSuccess = true) {
+      showModal(`
+        <div class="text-center">
+          <div class="w-12 h-12 rounded-full ${isSuccess ? 'bg-emerald-100 text-emerald-600' : 'bg-red-100 text-red-600'} mx-auto flex items-center justify-center text-2xl font-bold mb-3">
+            ${isSuccess ? '✓' : '!'}
+          </div>
+          <h3 class="text-xl font-black text-stone-800 mb-2">${title}</h3>
+          <p class="text-stone-600 text-sm mb-6">${message}</p>
+          <button onclick="closeModal()" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-2.5 px-4 rounded-xl shadow transition">
+            Entendido
+          </button>
+        </div>
+      `);
+    }
+
+    function navigate(route) {
+      currentRoute = route;
+      render();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function setCategoryFilter(cat) {
+      currentCategoryFilter = cat;
+      render();
+    }
+
+    function handleSearchChange(val) {
+      searchQuery = val.toLowerCase().trim();
+      render();
+    }
+
+    function toggleCartDrawer(open = true) {
+      const drawer = document.getElementById("cart-drawer");
+      const backdrop = document.getElementById("cart-drawer-backdrop");
+      if (!drawer || !backdrop) return;
+      if (open) {
+        renderCartDrawerContent();
+        backdrop.classList.remove("hidden");
+        drawer.classList.add("cart-drawer-open");
+      } else {
+        drawer.classList.remove("cart-drawer-open");
+        backdrop.classList.add("hidden");
+      }
+    }
+
+    function addToCart(kitId) {
+      const kits = getKits();
+      const kit = kits.find(k => k.id === kitId);
+      if (!kit) return;
+
+      const cart = getCart();
+      const existing = cart.find(item => item.kitId === kitId);
+
+      if (existing) {
+        existing.quantity += 1;
+      } else {
+        cart.push({
+          kitId: kit.id,
+          title: kit.title || kit.category,
+          category: kit.category,
+          price: kit.price,
+          image_url: kit.image_url,
+          quantity: 1
+        });
+      }
+
+      saveCart(cart);
+      toggleCartDrawer(true);
+    }
+
+    function updateCartQuantity(kitId, delta) {
+      let cart = getCart();
+      const item = cart.find(i => i.kitId === kitId);
+      if (item) {
+        item.quantity += delta;
+        if (item.quantity <= 0) {
+          cart = cart.filter(i => i.kitId !== kitId);
+        }
+      }
+      saveCart(cart);
+      renderCartDrawerContent();
+    }
+
+    function removeCartItem(kitId) {
+      let cart = getCart();
+      cart = cart.filter(i => i.kitId !== kitId);
+      saveCart(cart);
+      renderCartDrawerContent();
+    }
+
+    function getCartTotals() {
+      const cart = getCart();
+      const subtotal = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+      const discount = isSubscriberDiscountActive ? subtotal * 0.10 : 0;
+      const total = subtotal - discount;
+      const count = cart.reduce((acc, item) => acc + item.quantity, 0);
+      return { subtotal, discount, total, count };
+    }
+
+    function updateCartBadge() {
+      const { count } = getCartTotals();
+      const badge = document.getElementById("cart-badge-count");
+      if (badge) {
+        badge.innerText = count;
+        if (count > 0) {
+          badge.classList.remove("hidden");
+        } else {
+          badge.classList.add("hidden");
+        }
+      }
+    }
+
+    function renderCartDrawerContent() {
+      const cart = getCart();
+      const container = document.getElementById("cart-items-container");
+      const labelCount = document.getElementById("cart-item-count-label");
+      const subtotalEl = document.getElementById("cart-subtotal");
+      const totalEl = document.getElementById("cart-total");
+      const discountRow = document.getElementById("cart-discount-row");
+      const discountEl = document.getElementById("cart-discount");
+      const checkoutBtn = document.getElementById("cart-checkout-btn");
+
+      if (!container || !labelCount || !subtotalEl || !totalEl || !discountRow || !discountEl || !checkoutBtn) return;
+
+      const { subtotal, discount, total, count } = getCartTotals();
+
+      labelCount.innerText = `${count} kit${count === 1 ? '' : 's'} na cesta`;
+      subtotalEl.innerText = `R$ ${subtotal.toFixed(2)}`;
+      totalEl.innerText = `R$ ${total.toFixed(2)}`;
+
+      if (isSubscriberDiscountActive && discount > 0) {
+        discountRow.classList.remove("hidden");
+        discountEl.innerText = `- R$ ${discount.toFixed(2)}`;
+      } else {
+        discountRow.classList.add("hidden");
+      }
+
+      checkoutBtn.disabled = cart.length === 0;
+
+      if (cart.length === 0) {
+        container.innerHTML = `
+          <div class="h-full flex flex-col items-center justify-center text-center p-6 text-stone-400">
+            <span class="text-6xl mb-3">🧺</span>
+            <p class="font-bold text-stone-700 text-base">Sua cesta está vazia</p>
+            <p class="text-xs text-stone-400 mt-1">Selecione kits frescos da roça para montar seu pedido sem intermediários.</p>
+            <button onclick="toggleCartDrawer(false)" class="mt-4 bg-emerald-50 text-emerald-800 text-xs font-bold py-2.5 px-4 rounded-xl hover:bg-emerald-100 transition">
+              Ver Catálogo
+            </button>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = cart.map(item => {
+        const itemUnitFinal = isSubscriberDiscountActive ? (item.price * 0.9) : item.price;
+        const itemSubtotal = itemUnitFinal * item.quantity;
+        return `
+          <div class="flex items-center gap-3 bg-stone-50 p-3 rounded-2xl border border-stone-200/80">
+            <img 
+              src="${item.image_url}" 
+              alt="${item.title}" 
+              class="w-14 h-14 rounded-xl object-cover border border-stone-200 flex-shrink-0"
+              onerror="this.src='https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=200&q=80'"
+            />
+            <div class="flex-1 min-w-0">
+              <span class="text-[10px] font-bold uppercase text-emerald-800 block truncate">${item.category}</span>
+              <h4 class="font-bold text-xs text-stone-900 leading-tight truncate">${item.title}</h4>
+              <div class="text-xs font-black text-emerald-700 mt-0.5">
+                R$ ${itemSubtotal.toFixed(2)}
+                ${isSubscriberDiscountActive ? '<span class="text-[10px] text-amber-600 font-bold ml-1">(10% off)</span>' : ''}
+              </div>
+
+              <div class="flex items-center gap-2 mt-1.5">
+                <button 
+                  onclick="updateCartQuantity(${item.kitId}, -1)" 
+                  class="w-5 h-5 rounded-md bg-white border border-stone-300 font-bold text-stone-700 hover:bg-stone-100 flex items-center justify-center text-xs"
+                >-</button>
+                <span class="text-xs font-black text-stone-800 w-4 text-center">${item.quantity}</span>
+                <button 
+                  onclick="updateCartQuantity(${item.kitId}, 1)" 
+                  class="w-5 h-5 rounded-md bg-white border border-stone-300 font-bold text-stone-700 hover:bg-stone-100 flex items-center justify-center text-xs"
+                >+</button>
+              </div>
+            </div>
+
+            <button 
+              onclick="removeCartItem(${item.kitId})" 
+              class="text-stone-300 hover:text-red-600 p-1.5 text-sm transition"
+              title="Remover kit"
+            >
+              🗑️
+            </button>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function goToCheckoutFromCart() {
+      toggleCartDrawer(false);
+      navigate('checkout');
+    }
+
+    function renderNavbar() {
+      const container = document.getElementById("nav-actions");
+      if (!container) return;
+      const { count } = getCartTotals();
+
+      const cartButtonHtml = `
+        <button 
+          onclick="toggleCartDrawer(true)" 
+          class="relative bg-emerald-700 hover:bg-emerald-800 text-white px-3 sm:px-4 py-2 rounded-xl font-black text-xs sm:text-sm flex items-center gap-2 shadow-sm transition"
+        >
+          <span>🧺</span>
+          <span class="hidden sm:inline">Minha Cesta</span>
+          <span 
+            id="cart-badge-count" 
+            class="${count > 0 ? '' : 'hidden'} bg-amber-400 text-emerald-950 text-[11px] font-black px-1.5 py-0.2 rounded-full shadow"
+          >
+            ${count}
+          </span>
+        </button>
+      `;
+
+      if (!currentUser) {
+        container.innerHTML = `
+          ${cartButtonHtml}
+          <button onclick="navigate('store')" class="text-xs sm:text-sm font-bold px-3 py-2 rounded-lg text-emerald-800 hover:bg-emerald-50 transition">
+            Catálogo
+          </button>
+          <button onclick="navigate('auth')" class="bg-stone-100 hover:bg-stone-200 text-stone-800 text-xs sm:text-sm font-bold py-2 px-3.5 rounded-xl border border-stone-300 transition">
+            Entrar / Cadastrar
+          </button>
+        `;
+        return;
+      }
+
+      container.innerHTML = `
+        <div class="flex items-center gap-2 sm:gap-3">
+          ${cartButtonHtml}
+
+          <div class="text-right hidden md:block">
+            <span class="block text-[9px] font-black uppercase tracking-wider text-stone-400">
+              ${currentUser.role === 'supplier' ? '👨‍🌾 Produtor Rural' : '🛒 Consumidor'}
+            </span>
+            <span class="text-xs font-black text-stone-800">${currentUser.name}</span>
+          </div>
+
+          <button onclick="navigate('store')" class="text-xs font-bold px-3 py-2 rounded-lg hover:bg-stone-100 transition ${currentRoute === 'store' ? 'text-emerald-700 bg-emerald-50' : 'text-stone-600'}">
+            Kits
+          </button>
+
+          <button onclick="navigate('orders')" class="text-xs font-bold px-3 py-2 rounded-lg hover:bg-stone-100 transition ${currentRoute === 'orders' ? 'text-emerald-700 bg-emerald-50' : 'text-stone-600'}">
+            Pedidos
+          </button>
+
+          ${currentUser.role === 'supplier' ? `
+            <button onclick="navigate('supplier')" class="bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold px-3 py-2 rounded-xl shadow transition">
+              Painel Produtor
+            </button>
+          ` : ''}
+
+          <button onclick="clearSession()" class="text-stone-400 hover:text-red-600 p-1.5 text-xs font-bold transition">
+            Sair
+          </button>
+        </div>
+      `;
+    }
+
+    function renderStore() {
+      const allKits = getKits();
+
+      const filteredKits = allKits.filter(k => {
+        const matchesCategory = (currentCategoryFilter === "all" || k.category === currentCategoryFilter);
+        const matchesSearch = !searchQuery || 
+          k.title.toLowerCase().includes(searchQuery) ||
+          k.category.toLowerCase().includes(searchQuery) ||
+          k.items.some(i => i.name.toLowerCase().includes(searchQuery));
+        return matchesCategory && matchesSearch;
+      });
+
+      const catCounts = {
+        all: allKits.length,
+        "Legumes e Verduras": allKits.filter(k => k.category === "Legumes e Verduras").length,
+        "Frutas": allKits.filter(k => k.category === "Frutas").length,
+        "Frutas, Legumes e Verduras": allKits.filter(k => k.category === "Frutas, Legumes e Verduras").length
+      };
+
+      return `
+        <div>
+          <!-- Barra Superior -->
+          <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 mb-6">
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="text-2xl">🌱</span>
+                <h2 class="text-2xl sm:text-3xl font-black text-emerald-950 tracking-tight">Cestas Frescas da Semana</h2>
+              </div>
+              <p class="text-stone-500 text-xs sm:text-sm mt-0.5">Colheita matinal com transporte direto dos pequenos agricultores para você.</p>
+            </div>
+
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full lg:w-auto">
+              <!-- Barra de Busca Rápida -->
+              <div class="relative flex-1 sm:w-64">
+                <input 
+                  type="text" 
+                  placeholder="Buscar tomate, banana, mandioca..." 
+                  value="${searchQuery}"
+                  oninput="handleSearchChange(this.value)"
+                  class="w-full pl-9 pr-4 py-2.5 text-xs font-semibold bg-white border border-stone-300 rounded-2xl focus:ring-2 focus:ring-emerald-600 focus:outline-none shadow-sm"
+                />
+                <span class="absolute left-3 top-2.5 text-stone-400 text-sm">🔍</span>
+                ${searchQuery ? `
+                  <button onclick="handleSearchChange('')" class="absolute right-3 top-2.5 text-stone-400 hover:text-stone-700 text-xs font-bold">×</button>
+                ` : ''}
+              </div>
+
+              <!-- Toggle Assinatura -->
+              <label class="flex items-center justify-between gap-3 bg-white px-4 py-2.5 rounded-2xl border-2 border-emerald-500/30 hover:border-emerald-500 shadow-sm cursor-pointer select-none transition">
+                <input 
+                  type="checkbox" 
+                  id="subscriber-check" 
+                  class="w-4 h-4 text-emerald-600 rounded border-stone-300 focus:ring-emerald-500 cursor-pointer" 
+                  ${isSubscriberDiscountActive ? 'checked' : ''}
+                  onchange="toggleSubscriber(this.checked)"
+                />
+                <span class="text-xs font-bold text-stone-700 whitespace-nowrap">
+                  Assinatura Semanal <span class="bg-amber-100 text-amber-900 px-2 py-0.5 rounded-full text-[10px] font-black ml-1">10% OFF</span>
+                </span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Filtros de Categorias -->
+          <div class="flex flex-wrap items-center gap-2 mb-6 bg-stone-100 p-1 rounded-2xl border border-stone-200 w-fit">
+            <button 
+              onclick="setCategoryFilter('all')" 
+              class="px-3.5 py-1.5 rounded-xl text-xs font-extrabold transition ${currentCategoryFilter === 'all' ? 'bg-emerald-800 text-white shadow' : 'text-stone-600 hover:text-stone-900'}"
+            >
+              Todos os Kits (${catCounts.all})
+            </button>
+            <button 
+              onclick="setCategoryFilter('Legumes e Verduras')" 
+              class="px-3.5 py-1.5 rounded-xl text-xs font-extrabold transition ${currentCategoryFilter === 'Legumes e Verduras' ? 'bg-emerald-800 text-white shadow' : 'text-stone-600 hover:text-stone-900'}"
+            >
+              🥦 Legumes & Verduras (${catCounts['Legumes e Verduras']})
+            </button>
+            <button 
+              onclick="setCategoryFilter('Frutas')" 
+              class="px-3.5 py-1.5 rounded-xl text-xs font-extrabold transition ${currentCategoryFilter === 'Frutas' ? 'bg-emerald-800 text-white shadow' : 'text-stone-600 hover:text-stone-900'}"
+            >
+              🍎 Frutas (${catCounts['Frutas']})
+            </button>
+            <button 
+              onclick="setCategoryFilter('Frutas, Legumes e Verduras')" 
+              class="px-3.5 py-1.5 rounded-xl text-xs font-extrabold transition ${currentCategoryFilter === 'Frutas, Legumes e Verduras' ? 'bg-emerald-800 text-white shadow' : 'text-stone-600 hover:text-stone-900'}"
+            >
+              🧺 Mistos Completos (${catCounts['Frutas, Legumes e Verduras']})
+            </button>
+          </div>
+
+          ${filteredKits.length === 0 ? `
+            <div class="text-center py-12 bg-white rounded-3xl border border-stone-200 p-8 shadow-sm">
+              <span class="text-4xl block mb-2">🔍</span>
+              <h3 class="text-base font-bold text-stone-800">Nenhum alimento ou kit encontrado para "${searchQuery}"</h3>
+              <p class="text-xs text-stone-500 mt-1 mb-4">Tente buscar por outro termo ou limpe o filtro.</p>
+              <button onclick="handleSearchChange(''); setCategoryFilter('all');" class="bg-emerald-700 text-white text-xs font-bold py-2 px-4 rounded-xl shadow">
+                Ver Todos os 12 Kits
+              </button>
+            </div>
+          ` : ''}
+
+          <!-- Grid 2x2 -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            ${filteredKits.map(kit => {
+              const valorFinal = isSubscriberDiscountActive ? (kit.price * 0.9) : kit.price;
+              const kitTitle = kit.title || kit.category;
+              return `
+                <div class="bg-white rounded-3xl shadow-sm hover:shadow-lg border border-stone-200/90 overflow-hidden flex flex-col justify-between transition-all duration-300 group">
+                  <div>
+                    <div class="relative h-44 overflow-hidden bg-stone-100">
+                      <img 
+                        src="${kit.image_url}" 
+                        alt="${kitTitle}" 
+                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        onerror="this.src='https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=800&q=80'"
+                      >
+                      <div class="absolute top-2.5 left-2.5 bg-emerald-950/85 backdrop-blur text-white text-[10px] font-black uppercase px-2.5 py-0.5 rounded-full shadow">
+                        ${kit.category}
+                      </div>
+
+                      ${kit.badge ? `
+                        <div class="absolute bottom-2.5 left-2.5 bg-amber-500 text-emerald-950 text-[10px] font-black uppercase px-2 py-0.5 rounded-md shadow">
+                          ⭐ ${kit.badge}
+                        </div>
+                      ` : ''}
+
+                      ${isSubscriberDiscountActive ? `
+                        <span class="absolute top-2.5 right-2.5 bg-amber-500 text-white text-[11px] font-black uppercase px-2.5 py-0.5 rounded-full shadow">
+                          10% OFF
+                        </span>
+                      ` : ''}
+                    </div>
+
+                    <div class="p-5">
+                      <div class="flex justify-between items-start gap-2 mb-2">
+                        <h3 class="text-lg font-black text-emerald-950 leading-snug">${kitTitle}</h3>
+                      </div>
+
+                      <div class="mb-3">
+                        <span class="text-[10px] font-extrabold uppercase text-stone-400 block mb-1">
+                          O que vem nesta cesta (${kit.items.length} itens):
+                        </span>
+                        <div class="flex flex-wrap gap-1.5 max-h-24 overflow-y-auto pr-1">
+                          ${kit.items.map(item => `
+                            <span class="inline-flex items-center gap-1 bg-stone-100 hover:bg-stone-200/70 border border-stone-200 text-stone-700 text-xs px-2.5 py-1 rounded-xl">
+                              <span class="font-semibold">${item.name}</span>
+                              <span class="text-[10px] font-black text-emerald-800 bg-white px-1.5 py-0.2 rounded border border-stone-200">${item.quantity}</span>
+                            </span>
+                          `).join('')}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="p-5 pt-0">
+                    <div class="flex items-baseline justify-between mb-3 bg-stone-50 p-2.5 rounded-2xl border border-stone-100">
+                      <div>
+                        ${isSubscriberDiscountActive ? `
+                          <span class="text-[10px] text-stone-400 line-through block font-medium">R$ ${kit.price.toFixed(2)}</span>
+                        ` : ''}
+                        <p class="text-xl font-black text-emerald-800">
+                          R$ ${valorFinal.toFixed(2)}
+                        </p>
+                      </div>
+                      <div class="text-right">
+                        <span class="text-[11px] font-bold text-stone-500 block">por entrega</span>
+                        <span class="text-[10px] text-emerald-700 font-extrabold">Pague na sua porta</span>
+                      </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-2">
+                      <button 
+                        onclick="addToCart(${kit.id})" 
+                        class="bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-extrabold py-2.5 px-3 rounded-xl border border-emerald-200 transition text-xs flex items-center justify-center gap-1.5 shadow-sm"
+                      >
+                        <span>+ Cesta</span>
+                      </button>
+                      <button 
+                        onclick="addToCart(${kit.id}); toggleCartDrawer(true);" 
+                        class="bg-emerald-700 hover:bg-emerald-800 text-white font-extrabold py-2.5 px-3 rounded-xl shadow transition text-xs flex items-center justify-center gap-1"
+                      >
+                        <span>Pedir Agora</span>
+                        <span>→</span>
+                      </button>
+                    </div>
+
+                    <div class="mt-3 pt-2 border-t border-stone-100 flex items-center justify-between text-xs">
+                      <div class="flex items-center gap-1 text-amber-500 font-bold">
+                        <span>★ 5.0</span>
+                        <span class="text-stone-400 text-[11px]">(${kit.reviews ? kit.reviews.length : 0} opiniões)</span>
+                      </div>
+                      <button onclick="openReviewModal(${kit.id})" class="text-xs text-emerald-700 font-bold hover:underline">
+                        + Avaliar kit
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+
+          <!-- Banner Assinatura -->
+          <div class="mt-12 bg-gradient-to-r from-emerald-950 via-emerald-900 to-amber-950 text-white p-6 sm:p-8 rounded-3xl shadow-xl flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="max-w-xl">
+              <span class="bg-amber-400 text-emerald-950 font-black text-xs uppercase px-2.5 py-1 rounded-full">Economia Real</span>
+              <h3 class="text-2xl font-black mt-2">Gostou da comodidade? Seja um Assinante Da Roça!</h3>
+              <p class="text-emerald-100 text-xs sm:text-sm mt-1 leading-relaxed">
+                Receba sua seleção de frutas e verduras frescas toda semana no dia marcado, com 10% de desconto contínuo e sem taxas escondidas. Você pode cancelar ou pausar a qualquer momento.
+              </p>
+            </div>
+            <div class="flex-shrink-0">
+              <button 
+                onclick="toggleSubscriber(true); showAlert('Assinatura Ativada!', 'O desconto de 10% OFF foi aplicado em todos os kits do seu catálogo.', true);" 
+                class="bg-amber-400 hover:bg-amber-300 text-emerald-950 font-black px-6 py-3.5 rounded-2xl shadow-lg transition text-sm flex items-center gap-2"
+              >
+                <span>Ativar 10% de Desconto Semanal</span>
+                <span>✨</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderCheckout() {
+      const cart = getCart();
+      if (cart.length === 0) {
+        return `
+          <div class="text-center py-16 bg-white rounded-3xl border border-stone-200 p-8 max-w-lg mx-auto shadow-sm">
+            <span class="text-5xl block mb-3">🧺</span>
+            <h3 class="text-xl font-black text-stone-800">Sua cesta está vazia</h3>
+            <p class="text-stone-500 text-xs sm:text-sm mt-1 mb-6">Escolha seus kits frescos no catálogo de 2 em 2 para finalizar o pedido.</p>
+            <button onclick="navigate('store')" class="bg-emerald-700 hover:bg-emerald-800 text-white px-6 py-3 rounded-2xl font-black shadow transition text-sm">
+              Explorar Catálogo Da Roça
+            </button>
+          </div>
+        `;
+      }
+
+      const { subtotal, discount, total, count } = getCartTotals();
+
+      return `
+        <div class="max-w-3xl mx-auto bg-white rounded-3xl shadow-xl border border-stone-200 overflow-hidden">
+          <div class="bg-gradient-to-r from-emerald-950 to-emerald-800 p-6 sm:p-8 text-white">
+            <span class="text-amber-400 font-bold text-xs uppercase tracking-wider">Da Roça • Colheita Programada</span>
+            <h2 class="text-2xl sm:text-3xl font-black mt-1">Finalizar Entrega da Cesta</h2>
+            <p class="text-emerald-100 text-xs sm:text-sm mt-1">Zero pagamento antecipado. Você paga somente ao entregador ao receber na sua residência.</p>
+          </div>
+
+          <div class="p-6 sm:p-8 space-y-6">
+            <div class="bg-stone-50 border border-stone-200 rounded-2xl p-4 sm:p-5">
+              <div class="flex justify-between items-center mb-3">
+                <span class="text-xs font-black uppercase text-emerald-900 tracking-wider">Kits Escolhidos (${count})</span>
+                <button onclick="toggleCartDrawer(true)" class="text-xs text-emerald-700 font-bold hover:underline">
+                  Editar Cesta
+                </button>
+              </div>
+
+              <div class="divide-y divide-stone-200/80">
+                ${cart.map(i => {
+                  const unitPrice = isSubscriberDiscountActive ? (i.price * 0.9) : i.price;
+                  return `
+                    <div class="py-2 flex items-center justify-between text-xs sm:text-sm">
+                      <div class="flex items-center gap-2">
+                        <span class="font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded text-xs">${i.quantity}x</span>
+                        <span class="font-bold text-stone-800">${i.title}</span>
+                      </div>
+                      <span class="font-bold text-stone-700">R$ ${(unitPrice * i.quantity).toFixed(2)}</span>
+                    </div>
+                  `;
+                }).join('')}
+              </div>
+
+              <div class="pt-3 border-t border-stone-200 mt-2 space-y-1">
+                ${isSubscriberDiscountActive ? `
+                  <div class="flex justify-between text-xs text-amber-700 font-bold">
+                    <span>Desconto Assinante Semanal (10% OFF):</span>
+                    <span>- R$ ${discount.toFixed(2)}</span>
+                  </div>
+                ` : ''}
+                <div class="flex justify-between items-center text-base sm:text-lg font-black text-emerald-950 pt-1">
+                  <span>Total a Pagar na Entrega:</span>
+                  <span class="text-xl sm:text-2xl text-emerald-700">R$ ${total.toFixed(2)}</span>
+                </div>
+              </div>
+            </div>
+
+            <form onsubmit="handlePlaceCartOrder(event, ${total})" class="space-y-4">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-xs font-bold uppercase text-stone-700 mb-1">Nome Completo do Destinatário:</label>
+                  <input 
+                    type="text" 
+                    id="checkout-name" 
+                    required 
+                    value="${currentUser ? currentUser.name : ''}"
+                    placeholder="Ex: Mariana Alencar"
+                    class="w-full px-4 py-2.5 rounded-xl border border-stone-300 focus:ring-2 focus:ring-emerald-600 focus:outline-none text-sm font-semibold"
+                  />
+                </div>
+                <div>
+                  <label class="block text-xs font-bold uppercase text-stone-700 mb-1">WhatsApp / Telefone para aviso de chegada:</label>
+                  <input 
+                    type="tel" 
+                    id="checkout-phone" 
+                    required 
+                    placeholder="(11) 98765-4321"
+                    class="w-full px-4 py-2.5 rounded-xl border border-stone-300 focus:ring-2 focus:ring-emerald-600 focus:outline-none text-sm font-semibold"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold uppercase text-stone-700 mb-1">Endereço Completo de Entrega:</label>
+                <input 
+                  type="text" 
+                  id="checkout-address" 
+                  required 
+                  placeholder="Rua, número, complemento, bairro e referência"
+                  class="w-full px-4 py-2.5 rounded-xl border border-stone-300 focus:ring-2 focus:ring-emerald-600 focus:outline-none text-sm font-semibold"
+                />
+              </div>
+
+              <!-- Forma de Pagamento -->
+              <div class="bg-amber-50/70 border border-amber-200 rounded-2xl p-4 sm:p-5">
+                <label class="block text-xs font-black uppercase text-amber-950 mb-2">
+                  Como prefere pagar diretamente ao entregador na chegada?
+                </label>
+                <div class="space-y-2">
+                  <label class="flex items-center gap-3 bg-white p-3 rounded-xl border border-amber-200/80 cursor-pointer hover:border-amber-400 transition">
+                    <input type="radio" name="payment-method" value="Pix na Entrega (QR Code)" checked class="text-emerald-700 focus:ring-emerald-500 w-4 h-4" onchange="toggleTrocoField(false)" />
+                    <div>
+                      <span class="block text-xs sm:text-sm font-black text-stone-800">⚡ Pix no Portão</span>
+                      <span class="text-[11px] text-stone-500">O entregador exibe o QR Code ou passa a chave no ato da entrega.</span>
+                    </div>
+                  </label>
+
+                  <label class="flex items-center gap-3 bg-white p-3 rounded-xl border border-amber-200/80 cursor-pointer hover:border-amber-400 transition">
+                    <input type="radio" name="payment-method" value="Cartão (Maquininha no portão)" class="text-emerald-700 focus:ring-emerald-500 w-4 h-4" onchange="toggleTrocoField(false)" />
+                    <div>
+                      <span class="block text-xs sm:text-sm font-black text-stone-800">💳 Maquininha de Cartão</span>
+                      <span class="text-[11px] text-stone-500">O entregador traz a maquininha móvel (Débito, Crédito e Vale Alimentação).</span>
+                    </div>
+                  </label>
+
+                  <label class="flex items-center gap-3 bg-white p-3 rounded-xl border border-amber-200/80 cursor-pointer hover:border-amber-400 transition">
+                    <input type="radio" name="payment-method" value="Dinheiro (Pagar ao receber)" class="text-emerald-700 focus:ring-emerald-500 w-4 h-4" onchange="toggleTrocoField(true)" />
+                    <div>
+                      <span class="block text-xs sm:text-sm font-black text-stone-800">💵 Dinheiro Físico</span>
+                      <span class="text-[11px] text-stone-500">Pagamento direto em cédulas ao entregador.</span>
+                    </div>
+                  </label>
+                </div>
+
+                <div id="troco-container" class="hidden mt-3 bg-white p-3 rounded-xl border border-stone-200">
+                  <label class="block text-xs font-bold text-stone-700 mb-1">Precisa de troco para quanto?</label>
+                  <input type="text" id="checkout-troco" placeholder="Ex: Troco para R$ 100,00 ou Não preciso de troco" class="w-full px-3 py-2 text-xs rounded-lg border border-stone-300 font-semibold" />
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold uppercase text-stone-700 mb-1">Observações de Entrega (Opcional):</label>
+                <textarea 
+                  id="checkout-notes" 
+                  rows="2" 
+                  placeholder="Ex: Deixar na portaria, interfone 22, ligar quando estiver no portão..." 
+                  class="w-full px-4 py-2 text-xs font-semibold rounded-xl border border-stone-300 focus:outline-none focus:ring-1 focus:ring-emerald-600"
+                ></textarea>
+              </div>
+
+              <div class="pt-3 flex gap-3">
+                <button 
+                  type="button" 
+                  onclick="navigate('store')" 
+                  class="w-1/3 bg-stone-100 hover:bg-stone-200 text-stone-700 font-bold py-3.5 rounded-xl transition text-xs sm:text-sm"
+                >
+                  ← Ver Mais Kits
+                </button>
+                <button 
+                  type="submit" 
+                  class="w-2/3 bg-emerald-700 hover:bg-emerald-800 text-white font-black text-sm sm:text-base py-3.5 rounded-xl shadow-lg hover:shadow-xl transition flex items-center justify-center gap-2"
+                >
+                  <span>Confirmar Pedido Da Roça</span>
+                  <span>✓</span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      `;
+    }
+
+    function toggleTrocoField(show) {
+      const el = document.getElementById("troco-container");
+      if (el) {
+        if (show) el.classList.remove("hidden");
+        else el.classList.add("hidden");
+      }
+    }
+
+    function handlePlaceCartOrder(e, totalAmount) {
+      e.preventDefault();
+      const cart = getCart();
+      if (!cart.length) return;
+
+      const name = document.getElementById("checkout-name").value.trim();
+      const phone = document.getElementById("checkout-phone").value.trim();
+      const address = document.getElementById("checkout-address").value.trim();
+      const notes = document.getElementById("checkout-notes")?.value.trim() || "";
+      const paymentEl = document.querySelector('input[name="payment-method"]:checked');
+      let paymentMethod = paymentEl ? paymentEl.value : "Pix na Entrega (QR Code)";
+
+      const trocoInput = document.getElementById("checkout-troco");
+      if (trocoInput && trocoInput.value.trim() && paymentMethod.includes("Dinheiro")) {
+        paymentMethod += ` (Troco p/: ${trocoInput.value.trim()})`;
+      }
+
+      const itemsDescription = cart.map(i => `${i.quantity}x ${i.title}`).join(", ");
+      const now = new Date();
+
+      const newOrder = {
+        id: Math.floor(1000 + Math.random() * 9000),
+        items: cart,
+        itemsDescription: itemsDescription,
+        clientName: name,
+        phone: phone,
+        userEmail: currentUser ? currentUser.email : "visitante@daroca.com",
+        address: address,
+        notes: notes,
+        paymentMethod: paymentMethod,
+        total: totalAmount,
+        status: "Pendente",
+        createdAt: now.toISOString(),
+        date: now.toLocaleDateString("pt-BR")
+      };
+
+      const orders = getOrders();
+      orders.unshift(newOrder);
+      saveOrders(orders);
+      saveCart([]);
+
+      const zapMsg = encodeURIComponent(
+        `🌱 *NOVO PEDIDO DA ROÇA #${newOrder.id}*\n\n` +
+        `👤 *Cliente:* ${name}\n` +
+        `📞 *Telefone:* ${phone}\n` +
+        `📍 *Endereço:* ${address}\n` +
+        `🧺 *Kits:* ${itemsDescription}\n` +
+        `💳 *Pagamento na entrega:* ${paymentMethod}\n` +
+        `💰 *Valor Total:* R$ ${totalAmount.toFixed(2)}\n` +
+        (notes ? `📝 *Observação:* ${notes}\n` : '')
+      );
+      const zapLink = `https://api.whatsapp.com/send?text=${zapMsg}`;
+
+      showModal(`
+        <div class="text-center p-2">
+          <div class="w-12 h-12 rounded-full bg-emerald-100 text-emerald-600 mx-auto flex items-center justify-center text-2xl font-bold mb-3">
+            ✓
+          </div>
+          <h3 class="text-xl font-black text-stone-900 mb-1">Pedido #${newOrder.id} Realizado!</h3>
+          <p class="text-stone-600 text-xs sm:text-sm mb-4 leading-relaxed">
+            Sua solicitação de colheita foi enviada aos produtores parceiros. Os alimentos serão higienizados e entregues fresquinhos.
+          </p>
+
+          <div class="bg-stone-50 border border-stone-200 rounded-xl p-3 text-left text-xs space-y-1 mb-4">
+            <p><strong>Total:</strong> R$ ${totalAmount.toFixed(2)}</p>
+            <p><strong>Forma combinada:</strong> ${paymentMethod}</p>
+            <p><strong>Endereço:</strong> ${address}</p>
+          </div>
+
+          <div class="space-y-2">
+            <a 
+              href="${zapLink}" 
+              target="_blank" 
+              class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 px-4 rounded-xl text-xs flex items-center justify-center gap-1.5 shadow"
+            >
+              <span>💬 Enviar Comprovante para o WhatsApp do Produtor</span>
+            </a>
+            <button 
+              onclick="closeModal(); navigate('orders');" 
+              class="w-full bg-stone-100 hover:bg-stone-200 text-stone-700 font-bold py-2.5 px-4 rounded-xl text-xs transition"
+            >
+              Ver Meus Pedidos
+            </button>
+          </div>
+        </div>
+      `);
+    }
+
+    function renderOrders() {
+      const allOrders = getOrders();
+      const userOrders = currentUser 
+        ? allOrders.filter(o => o.userEmail === currentUser.email)
+        : allOrders;
+
+      return `
+        <div class="max-w-5xl mx-auto">
+          <div class="flex justify-between items-center mb-6">
+            <div>
+              <h2 class="text-2xl sm:text-3xl font-black text-emerald-950">Meus Pedidos Da Roça</h2>
+              <p class="text-stone-500 text-xs sm:text-sm">Acompanhe suas cestas colhidas e o status de entrega na sua porta.</p>
+            </div>
+            <button onclick="navigate('store')" class="text-xs font-bold text-emerald-800 bg-emerald-50 px-3.5 py-2 rounded-xl hover:bg-emerald-100 transition">
+              ← Catálogo
+            </button>
+          </div>
+
+          ${userOrders.length === 0 ? `
+            <div class="bg-white rounded-3xl p-10 text-center border border-stone-200 shadow-sm">
+              <span class="text-5xl mb-3 block">🧺</span>
+              <h3 class="text-lg font-bold text-stone-800 mb-1">Nenhum pedido realizado ainda</h3>
+              <p class="text-stone-500 text-xs mb-5 max-w-sm mx-auto">Escolha qualquer um dos 12 kits frescos e receba o melhor da fazenda.</p>
+              <button onclick="navigate('store')" class="bg-emerald-700 hover:bg-emerald-800 text-white font-black py-2.5 px-5 rounded-2xl shadow transition text-xs">
+                Explorar Kits Da Roça
+              </button>
+            </div>
+          ` : `
+            <div class="bg-white rounded-3xl shadow-sm border border-stone-200 overflow-hidden">
+              <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs text-stone-600">
+                  <thead class="bg-stone-50 text-[10px] uppercase font-black text-stone-400 border-b border-stone-200">
+                    <tr>
+                      <th class="p-3">Cód.</th>
+                      <th class="p-3">Data</th>
+                      <th class="p-3">Kits Selecionados</th>
+                      <th class="p-3">Pagamento na Entrega</th>
+                      <th class="p-3">Total</th>
+                      <th class="p-3">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-stone-100">
+                    ${userOrders.map(o => `
+                      <tr class="hover:bg-stone-50/80 transition">
+                        <td class="p-3 font-mono font-bold text-emerald-900">#${o.id}</td>
+                        <td class="p-3 font-medium">${o.date}</td>
+                        <td class="p-3 font-bold text-stone-800">
+                          ${o.itemsDescription || o.kitName || 'Kit Da Roça'}
+                        </td>
+                        <td class="p-3 text-[11px] font-semibold text-stone-600">${o.paymentMethod}</td>
+                        <td class="p-3 font-black text-emerald-800">R$ ${o.total.toFixed(2)}</td>
+                        <td class="p-3">
+                          <span class="inline-block px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider ${
+                            o.status === 'Entregue' ? 'bg-emerald-100 text-emerald-800' : 
+                            o.status === 'Saiu para Entrega' ? 'bg-blue-100 text-blue-800' :
+                            o.status === 'Em Colheita' ? 'bg-amber-100 text-amber-800' :
+                            'bg-stone-200 text-stone-800'
+                          }">
+                            ${o.status}
+                          </span>
+                        </td>
+                      </tr>
+                    `).join('')}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          `}
+        </div>
+      `;
+    }
+
+    function renderSupplier() {
+      if (!currentUser || currentUser.role !== 'supplier') {
+        return `
+          <div class="bg-white p-8 rounded-3xl text-center max-w-md mx-auto shadow border border-stone-200">
+            <span class="text-4xl block mb-2">🌾</span>
+            <p class="text-stone-800 font-bold mb-4">Acesso exclusivo para produtores rurais cadastrados.</p>
+            <button onclick="navigate('store')" class="bg-emerald-700 text-white px-4 py-2.5 rounded-xl font-bold text-xs">Voltar à Loja</button>
+          </div>
+        `;
+      }
+
+      const allOrders = getOrders();
+      const kits = getKits();
+      const now = new Date();
+
+      const filteredOrders = allOrders.filter(o => {
+        const orderDate = new Date(o.createdAt || Date.now());
+        if (supplierPeriodFilter === "today") {
+          return orderDate.toDateString() === now.toDateString();
+        } else if (supplierPeriodFilter === "week") {
+          const diffDays = (now - orderDate) / (1000 * 60 * 60 * 24);
+          return diffDays <= 7;
+        } else if (supplierPeriodFilter === "month") {
+          const diffDays = (now - orderDate) / (1000 * 60 * 60 * 24);
+          return diffDays <= 30;
+        }
+        return true;
+      });
+
+      const totalRevenue = filteredOrders.reduce((acc, curr) => acc + curr.total, 0);
+      const averageTicket = filteredOrders.length ? (totalRevenue / filteredOrders.length) : 0;
+      const uniqueClients = new Set(filteredOrders.map(o => o.userEmail)).size;
+
+      const salesByKit = {};
+      filteredOrders.forEach(o => {
+        const desc = o.itemsDescription || o.kitName || "Kits Diversos";
+        desc.split(", ").forEach(piece => {
+          const cleanName = piece.replace(/^\d+x\s*/, '').trim();
+          if (!salesByKit[cleanName]) {
+            salesByKit[cleanName] = { count: 0, revenue: 0 };
+          }
+          salesByKit[cleanName].count += 1;
+          salesByKit[cleanName].revenue += (o.total / (desc.split(", ").length || 1));
+        });
+      });
+
+      const topProducts = Object.entries(salesByKit)
+        .map(([name, data]) => ({ name, ...data }))
+        .sort((a, b) => b.count - a.count);
+
+      return `
+        <div class="space-y-6">
+          <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 bg-white p-5 rounded-3xl border border-stone-200 shadow-sm">
+            <div>
+              <span class="text-amber-600 font-black text-xs uppercase tracking-widest flex items-center gap-1.5">
+                <span>🌾</span> AgroGestão Da Roça
+              </span>
+              <h2 class="text-2xl font-black text-emerald-950 mt-0.5">Painel Executivo do Produtor</h2>
+              <p class="text-stone-500 text-xs">Gestão de faturamento, pedidos e edição dos kits de alimentos.</p>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-2">
+              <div class="bg-stone-100 p-1 rounded-2xl flex items-center text-xs font-bold border border-stone-200">
+                <button onclick="setSupplierPeriod('today')" class="px-3 py-1.5 rounded-xl transition ${supplierPeriodFilter === 'today' ? 'bg-emerald-800 text-white shadow-sm' : 'text-stone-600 hover:text-stone-900'}">Hoje</button>
+                <button onclick="setSupplierPeriod('week')" class="px-3 py-1.5 rounded-xl transition ${supplierPeriodFilter === 'week' ? 'bg-emerald-800 text-white shadow-sm' : 'text-stone-600 hover:text-stone-900'}">7 Dias</button>
+                <button onclick="setSupplierPeriod('month')" class="px-3 py-1.5 rounded-xl transition ${supplierPeriodFilter === 'month' ? 'bg-emerald-800 text-white shadow-sm' : 'text-stone-600 hover:text-stone-900'}">30 Dias</button>
+                <button onclick="setSupplierPeriod('all')" class="px-3 py-1.5 rounded-xl transition ${supplierPeriodFilter === 'all' ? 'bg-emerald-800 text-white shadow-sm' : 'text-stone-600 hover:text-stone-900'}">Geral</button>
+              </div>
+
+              <button onclick="exportSalesCSV()" class="bg-stone-800 hover:bg-black text-white text-xs font-bold py-2 px-3.5 rounded-xl shadow-sm transition flex items-center gap-1.5">
+                <span>📊</span> Exportar CSV
+              </button>
+            </div>
+          </div>
+
+          <!-- Cards Métricas -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="bg-white p-4 rounded-3xl border border-stone-200 shadow-sm relative overflow-hidden">
+              <span class="text-[10px] font-black uppercase tracking-wider text-stone-400">Faturamento Bruto</span>
+              <p class="text-2xl font-black text-emerald-800 mt-1">R$ ${totalRevenue.toFixed(2)}</p>
+              <span class="text-[10px] text-stone-500 font-semibold block mt-0.5">
+                ${supplierPeriodFilter === 'today' ? 'Faturamento de Hoje' : supplierPeriodFilter === 'week' ? 'Últimos 7 dias' : supplierPeriodFilter === 'month' ? 'Últimos 30 dias' : 'Todo o período'}
+              </span>
+            </div>
+
+            <div class="bg-white p-4 rounded-3xl border border-stone-200 shadow-sm relative overflow-hidden">
+              <span class="text-[10px] font-black uppercase tracking-wider text-stone-400">Total de Pedidos</span>
+              <p class="text-2xl font-black text-amber-700 mt-1">${filteredOrders.length}</p>
+              <span class="text-[10px] text-stone-500 font-semibold block mt-0.5">Cestas despachadas</span>
+            </div>
+
+            <div class="bg-white p-4 rounded-3xl border border-stone-200 shadow-sm relative overflow-hidden">
+              <span class="text-[10px] font-black uppercase tracking-wider text-stone-400">Ticket Médio</span>
+              <p class="text-2xl font-black text-stone-800 mt-1">R$ ${averageTicket.toFixed(2)}</p>
+              <span class="text-[10px] text-stone-500 font-semibold block mt-0.5">Média por cliente</span>
+            </div>
+
+            <div class="bg-white p-4 rounded-3xl border border-stone-200 shadow-sm relative overflow-hidden">
+              <span class="text-[10px] font-black uppercase tracking-wider text-stone-400">Clientes Atendidos</span>
+              <p class="text-2xl font-black text-emerald-700 mt-1">${uniqueClients}</p>
+              <span class="text-[10px] text-stone-500 font-semibold block mt-0.5">Famílias alcançadas</span>
+            </div>
+          </div>
+
+          <!-- Gráficos e Ranking -->
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+            <div class="lg:col-span-2 bg-white p-5 rounded-3xl border border-stone-200 shadow-sm flex flex-col justify-between">
+              <h3 class="text-base font-black text-emerald-950 flex items-center gap-2 mb-2">
+                <span>📈</span> Curva de Vendas Da Roça
+              </h3>
+              <div class="h-56 relative">
+                <canvas id="supplierSalesChart"></canvas>
+              </div>
+            </div>
+
+            <div class="bg-white p-5 rounded-3xl border border-stone-200 shadow-sm">
+              <h3 class="text-base font-black text-emerald-950 mb-1 flex items-center gap-2">
+                <span>🏆</span> Kits Mais Vendidos
+              </h3>
+              <p class="text-[11px] text-stone-400 mb-3">Preferência dos clientes</p>
+
+              ${topProducts.length === 0 ? `
+                <p class="text-xs text-stone-400 italic py-6 text-center">Nenhum pedido computado no período.</p>
+              ` : `
+                <div class="space-y-2.5">
+                  ${topProducts.slice(0, 5).map((p, index) => {
+                    const pct = ((p.count / (filteredOrders.length || 1)) * 100).toFixed(0);
+                    return `
+                      <div class="bg-stone-50 p-2.5 rounded-xl border border-stone-100">
+                        <div class="flex justify-between items-center text-xs font-bold mb-1">
+                          <span class="text-stone-800 truncate max-w-[150px]">
+                            <strong class="text-emerald-800">#${index+1}</strong> ${p.name}
+                          </span>
+                          <span class="text-emerald-700">${p.count} un (${pct}%)</span>
+                        </div>
+                        <div class="w-full bg-stone-200 h-1.5 rounded-full overflow-hidden">
+                          <div class="bg-emerald-600 h-full rounded-full" style="width: ${pct}%"></div>
+                        </div>
+                        <span class="text-[10px] text-stone-400 font-medium block mt-1">Total: R$ ${p.revenue.toFixed(2)}</span>
+                      </div>
+                    `;
+                  }).join('')}
+                </div>
+              `}
+            </div>
+          </div>
+
+          <!-- Gerenciador de Kits -->
+          <div class="bg-white p-5 rounded-3xl border border-stone-200 shadow-sm">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-4">
+              <div>
+                <h3 class="text-lg font-black text-emerald-950 flex items-center gap-2">
+                  <span>🥬</span> Gerenciar Produtos & Preços
+                </h3>
+                <p class="text-xs text-stone-500">Edite preços, fotos e lista de itens de cada kit da horta.</p>
+              </div>
+              <button onclick="document.getElementById('form-novo-kit').scrollIntoView({ behavior: 'smooth' })" class="bg-emerald-800 hover:bg-emerald-900 text-white font-bold text-xs py-2 px-3 rounded-xl shadow-sm transition">
+                + Novo Kit
+              </button>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
+              ${kits.map(kit => `
+                <div class="border border-stone-200 rounded-2xl p-3 bg-stone-50/60 hover:bg-white transition flex flex-col justify-between">
+                  <div class="flex gap-2.5 items-start">
+                    <img 
+                      src="${kit.image_url}" 
+                      alt="${kit.title}" 
+                      class="w-14 h-14 rounded-xl object-cover border border-stone-200 flex-shrink-0"
+                      onerror="this.src='https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=200&q=80'"
+                    />
+                    <div class="flex-1 min-w-0">
+                      <span class="text-[9px] font-extrabold uppercase text-emerald-800 block truncate">${kit.category}</span>
+                      <h4 class="font-bold text-xs text-stone-900 leading-snug truncate">${kit.title || kit.category}</h4>
+                      <p class="text-xs font-black text-emerald-700 mt-0.5">R$ ${kit.price.toFixed(2)}</p>
+                    </div>
+                  </div>
+
+                  <div class="flex gap-2 mt-3 pt-2.5 border-t border-stone-200/80">
+                    <button 
+                      onclick="openEditKitModal(${kit.id})" 
+                      class="flex-1 bg-white hover:bg-stone-100 text-stone-700 border border-stone-300 font-bold py-1.5 px-2 rounded-xl text-xs transition"
+                    >
+                      ✏️ Editar
+                    </button>
+                    <button 
+                      onclick="deleteKit(${kit.id})" 
+                      class="bg-white hover:bg-red-50 text-red-600 border border-red-200 font-bold py-1.5 px-2 rounded-xl text-xs transition"
+                      title="Excluir"
+                    >
+                      🗑️
+                    </button>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+
+          <!-- Formulário de Criação -->
+          <div id="form-novo-kit" class="bg-white p-5 sm:p-6 rounded-3xl border border-stone-200 shadow-sm">
+            <h3 class="text-lg font-black text-stone-800 mb-1 flex items-center gap-2">
+              <span>🌱</span> Cadastrar Novo Kit da Terra
+            </h3>
+            <p class="text-xs text-stone-400 mb-4">Adicione uma nova opção de cesta para seus clientes.</p>
+
+            <form onsubmit="handleCreateKit(event)" class="space-y-3">
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div>
+                  <label class="block text-xs font-bold uppercase text-stone-600 mb-1">Categoria</label>
+                  <select id="new-kit-cat" class="w-full px-3 py-2 rounded-xl border border-stone-300 font-semibold text-xs">
+                    <option value="Legumes e Verduras">Legumes e Verduras</option>
+                    <option value="Frutas">Frutas</option>
+                    <option value="Frutas, Legumes e Verduras">Frutas, Legumes e Verduras</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-xs font-bold uppercase text-stone-600 mb-1">Nome do Kit</label>
+                  <input type="text" id="new-kit-title" required placeholder="Ex: Cesta Orgânica da Semana" class="w-full px-3 py-2 rounded-xl border border-stone-300 text-xs font-semibold">
+                </div>
+                <div>
+                  <label class="block text-xs font-bold uppercase text-stone-600 mb-1">Preço Normal (R$)</label>
+                  <input type="number" step="0.01" id="new-kit-price" required placeholder="69.90" class="w-full px-3 py-2 rounded-xl border border-stone-300 text-xs font-bold text-emerald-800">
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold uppercase text-stone-600 mb-1">URL da Imagem</label>
+                <input type="url" id="new-kit-img" required value="https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=800&q=80" class="w-full px-3 py-2 rounded-xl border border-stone-300 text-xs">
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold uppercase text-stone-600 mb-1">Itens Inclusos (Formato: Nome:Quantidade separados por vírgula)</label>
+                <input type="text" id="new-kit-items" required placeholder="Ex: Beterraba:1kg, Laranja:2kg, Rúcula:1 maço" class="w-full px-3 py-2 rounded-xl border border-stone-300 text-xs">
+              </div>
+
+              <button type="submit" class="bg-emerald-800 hover:bg-emerald-900 text-white font-black py-2.5 px-5 rounded-xl transition shadow text-xs flex items-center gap-2">
+                <span>✓ Salvar e Publicar no Catálogo</span>
+              </button>
+            </form>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderAuth() {
+      return `
+        <div class="max-w-md mx-auto bg-white rounded-3xl shadow-xl border border-stone-200/90 p-8">
+          <div class="text-center mb-6">
+            <div class="w-12 h-12 bg-emerald-100 text-emerald-800 rounded-2xl mx-auto flex items-center justify-center text-2xl font-bold mb-2">
+              🧺
+            </div>
+            <h2 class="text-2xl font-black text-emerald-950" id="auth-title">Acessar Da Roça</h2>
+            <p class="text-xs text-stone-500 mt-1" id="auth-sub">Entre para gerenciar pedidos, cestas e descontos.</p>
+          </div>
+
+          <form onsubmit="handleAuthSubmit(event)" class="space-y-3.5">
+            <div id="auth-name-group" class="hidden">
+              <label class="block text-xs font-bold uppercase text-stone-600 mb-1">Seu Nome Completo</label>
+              <input type="text" id="auth-name" placeholder="Ex: Tião Silva" class="w-full px-4 py-2.5 rounded-xl border border-stone-300 text-xs sm:text-sm font-semibold">
+            </div>
+
+            <div id="auth-role-group" class="hidden">
+              <label class="block text-xs font-bold uppercase text-stone-600 mb-1">Tipo de Perfil</label>
+              <select id="auth-role" class="w-full px-4 py-2.5 rounded-xl border border-stone-300 font-semibold text-stone-700 text-xs sm:text-sm">
+                <option value="customer">Consumidor (Comprar Kits)</option>
+                <option value="supplier">Produtor Rural / Fornecedor</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold uppercase text-stone-600 mb-1">E-mail</label>
+              <input type="email" id="auth-email" required placeholder="seuemail@exemplo.com" class="w-full px-4 py-2.5 rounded-xl border border-stone-300 text-xs sm:text-sm">
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold uppercase text-stone-600 mb-1">Senha</label>
+              <input type="password" id="auth-pass" required placeholder="••••••••" class="w-full px-4 py-2.5 rounded-xl border border-stone-300 text-xs sm:text-sm">
+            </div>
+
+            <button type="submit" id="auth-submit-btn" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-black py-3 rounded-xl shadow transition text-xs sm:text-sm">
+              Entrar
+            </button>
+          </form>
+
+          <div class="mt-6 text-center text-xs text-stone-500">
+            <span id="auth-toggle-text">Ainda não tem conta no Da Roça?</span>
+            <button onclick="toggleAuthMode()" id="auth-toggle-btn" class="text-emerald-700 font-bold ml-1 hover:underline">
+              Cadastre-se gratuitamente
+            </button>
+          </div>
+
+          <div class="mt-6 pt-4 border-t border-stone-100 bg-stone-50 -mx-8 -mb-8 p-5 rounded-b-3xl">
+            <p class="text-[10px] font-black text-stone-400 uppercase tracking-wider mb-1.5">Contas Prontas para Teste:</p>
+            <p class="text-xs text-stone-700">👨‍🌾 <strong>Produtor:</strong> produtor@daroca.com | 123456</p>
+            <p class="text-xs text-stone-700 mt-1">🛒 <strong>Cliente:</strong> mariana@email.com | 123456</p>
+          </div>
+        </div>
+      `;
+    }
+
+    let authIsLogin = true;
+    function toggleAuthMode() {
+      authIsLogin = !authIsLogin;
+      const title = document.getElementById("auth-title");
+      const sub = document.getElementById("auth-sub");
+      const nameGroup = document.getElementById("auth-name-group");
+      const roleGroup = document.getElementById("auth-role-group");
+      const submitBtn = document.getElementById("auth-submit-btn");
+      const toggleText = document.getElementById("auth-toggle-text");
+      const toggleBtn = document.getElementById("auth-toggle-btn");
+
+      if (authIsLogin) {
+        title.innerText = "Acessar Da Roça";
+        sub.innerText = "Entre para gerenciar pedidos, cestas e descontos.";
+        nameGroup.classList.add("hidden");
+        roleGroup.classList.add("hidden");
+        submitBtn.innerText = "Entrar";
+        toggleText.innerText = "Ainda não tem conta no Da Roça?";
+        toggleBtn.innerText = "Cadastre-se gratuitamente";
+      } else {
+        title.innerText = "Criar Conta Da Roça";
+        sub.innerText = "Cadastre-se como cliente ou pequeno produtor parceiro.";
+        nameGroup.classList.remove("hidden");
+        roleGroup.classList.remove("hidden");
+        submitBtn.innerText = "Finalizar Cadastro";
+        toggleText.innerText = "Já possui uma conta?";
+        toggleBtn.innerText = "Fazer login";
+      }
+    }
+
+    function handleAuthSubmit(e) {
+      e.preventDefault();
+      const email = document.getElementById("auth-email").value.trim();
+      const pass = document.getElementById("auth-pass").value;
+      const users = getUsers();
+
+      if (authIsLogin) {
+        const found = users.find(u => u.email === email && u.pass === pass);
+        if (found) {
+          setSession(found);
+          showAlert("Bem-vindo(a)!", `Acesso concedido como ${found.name}.`, true);
+          navigate(found.role === 'supplier' ? "supplier" : "store");
+        } else {
+          showAlert("Erro de Login", "Credenciais inválidas. Verifique os dados ou utilize as contas de teste.", false);
+        }
+      } else {
+        const name = document.getElementById("auth-name").value.trim();
+        const role = document.getElementById("auth-role").value;
+
+        if (users.find(u => u.email === email)) {
+          showAlert("E-mail Já Cadastrado", "Este endereço de e-mail já possui uma conta ativa.", false);
+          return;
+        }
+
+        const newUser = {
+          id: Date.now(),
+          name,
+          email,
+          pass,
+          role,
+          is_subscriber: false
+        };
+
+        users.push(newUser);
+        saveUsers(users);
+        setSession(newUser);
+        showAlert("Conta Criada!", `Bem-vindo(a) ao Da Roça, ${name}!`, true);
+        navigate(role === 'supplier' ? "supplier" : "store");
+      }
+    }
+
+    function toggleSubscriber(checked) {
+      isSubscriberDiscountActive = checked;
+      if (currentUser) {
+        currentUser.is_subscriber = checked;
+        const users = getUsers();
+        const idx = users.findIndex(u => u.id === currentUser.id);
+        if (idx !== -1) {
+          users[idx].is_subscriber = checked;
+          saveUsers(users);
+        }
+        setSession(currentUser);
+      }
+      render();
+    }
+
+    function setSupplierPeriod(period) {
+      supplierPeriodFilter = period;
+      render();
+    }
+
+    function exportSalesCSV() {
+      const orders = getOrders();
+      if (!orders.length) {
+        showAlert("Sem Dados", "Não existem pedidos registrados para exportação.", false);
+        return;
+      }
+      let csv = "ID,Data,Horario,Cliente,Email,Telefone,Itens,Endereco,Forma_Pagamento,Total_R$,Status\n";
+      orders.forEach(o => {
+        const d = new Date(o.createdAt || Date.now());
+        const dataFormatada = d.toLocaleDateString("pt-BR");
+        const horaFormatada = d.toLocaleTimeString("pt-BR");
+        const desc = (o.itemsDescription || o.kitName || "Kit").replace(/"/g, '""');
+        const end = (o.address || "").replace(/"/g, '""');
+        csv += `"${o.id}","${dataFormatada}","${horaFormatada}","${o.clientName}","${o.userEmail}","${o.phone || ''}","${desc}","${end}","${o.paymentMethod}",${o.total.toFixed(2)},"${o.status}"\n`;
+      });
+
+      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.setAttribute("href", url);
+      link.setAttribute("download", `da_roca_vendas_${new Date().toISOString().slice(0,10)}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    function openEditKitModal(kitId) {
+      const kits = getKits();
+      const kit = kits.find(k => k.id === kitId);
+      if (!kit) return;
+
+      const itemsStr = kit.items.map(i => `${i.name}:${i.quantity}`).join(", ");
+
+      showModal(`
+        <div class="max-w-lg w-full">
+          <div class="flex justify-between items-center mb-3">
+            <h3 class="text-lg font-black text-emerald-950 flex items-center gap-2">
+              <span>✏️</span> Editar Kit Da Roça
+            </h3>
+            <button onclick="closeModal()" class="text-stone-400 hover:text-stone-700 font-bold text-lg">&times;</button>
+          </div>
+          <form onsubmit="handleUpdateKit(event, ${kit.id})" class="space-y-3">
+            <div>
+              <label class="block text-xs font-bold uppercase text-stone-600 mb-1">Nome do Kit:</label>
+              <input type="text" id="edit-kit-title" required value="${kit.title || kit.category}" class="w-full px-3 py-2 text-xs rounded-xl border border-stone-300 font-semibold">
+            </div>
+
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="block text-xs font-bold uppercase text-stone-600 mb-1">Categoria:</label>
+                <select id="edit-kit-cat" class="w-full px-3 py-2 text-xs rounded-xl border border-stone-300 font-semibold">
+                  <option value="Legumes e Verduras" ${kit.category === 'Legumes e Verduras' ? 'selected' : ''}>Legumes e Verduras</option>
+                  <option value="Frutas" ${kit.category === 'Frutas' ? 'selected' : ''}>Frutas</option>
+                  <option value="Frutas, Legumes e Verduras" ${kit.category === 'Frutas, Legumes e Verduras' ? 'selected' : ''}>Frutas, Legumes e Verduras</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-xs font-bold uppercase text-stone-600 mb-1">Preço (R$):</label>
+                <input type="number" step="0.01" id="edit-kit-price" required value="${kit.price.toFixed(2)}" class="w-full px-3 py-2 text-xs rounded-xl border border-stone-300 font-bold text-emerald-800">
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold uppercase text-stone-600 mb-1">URL da Imagem:</label>
+              <input type="url" id="edit-kit-img" required value="${kit.image_url}" class="w-full px-3 py-2 text-xs rounded-xl border border-stone-300">
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold uppercase text-stone-600 mb-1">Itens (Nome:Quantidade separados por vírgula):</label>
+              <textarea id="edit-kit-items" rows="3" required class="w-full px-3 py-2 text-xs rounded-xl border border-stone-300 font-mono">${itemsStr}</textarea>
+            </div>
+
+            <div class="flex gap-2 pt-2">
+              <button type="button" onclick="closeModal()" class="w-1/3 bg-stone-100 hover:bg-stone-200 text-stone-700 font-bold py-2 rounded-xl text-xs transition">
+                Cancelar
+              </button>
+              <button type="submit" class="w-2/3 bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-2 rounded-xl text-xs shadow transition">
+                Salvar Alterações
+              </button>
+            </div>
+          </form>
+        </div>
+      `);
+    }
+
+    function handleUpdateKit(e, kitId) {
+      e.preventDefault();
+      const title = document.getElementById("edit-kit-title").value.trim();
+      const cat = document.getElementById("edit-kit-cat").value;
+      const price = parseFloat(document.getElementById("edit-kit-price").value);
+      const img = document.getElementById("edit-kit-img").value.trim();
+      const rawItems = document.getElementById("edit-kit-items").value.trim();
+
+      const items = rawItems.split(",").map(part => {
+        const [n, q] = part.split(":");
+        return { name: (n || "Alimento da Roça").trim(), quantity: (q || "1 un").trim() };
+      });
+
+      const kits = getKits();
+      const idx = kits.findIndex(k => k.id === kitId);
+      if (idx !== -1) {
+        kits[idx] = {
+          ...kits[idx],
+          title: title,
+          category: cat,
+          price: price,
+          image_url: img,
+          items: items
+        };
+        saveKits(kits);
+        closeModal();
+        showAlert("Kit Atualizado!", `O kit "${title}" foi salvo com sucesso.`, true);
+        render();
+      }
+    }
+
+    function deleteKit(kitId) {
+      const kits = getKits();
+      if (kits.length <= 1) {
+        showAlert("Atenção", "Você precisa manter pelo menos 1 kit ativo no catálogo.", false);
+        return;
+      }
+      showModal(`
+        <div class="text-center p-2">
+          <div class="w-12 h-12 rounded-full bg-red-100 text-red-600 mx-auto flex items-center justify-center text-xl font-bold mb-3">
+            🗑️
+          </div>
+          <h3 class="text-base font-black text-stone-800 mb-1">Excluir este Kit?</h3>
+          <p class="text-stone-500 text-xs mb-4">Essa ação removerá o kit do catálogo imediatamente.</p>
+          <div class="flex gap-2">
+            <button onclick="closeModal()" class="w-1/2 bg-stone-100 hover:bg-stone-200 text-stone-700 font-bold py-2 rounded-xl text-xs">
+              Cancelar
+            </button>
+            <button onclick="confirmDeleteKit(${kitId})" class="w-1/2 bg-red-600 hover:bg-red-700 text-white font-bold py-2 rounded-xl text-xs shadow">
+              Confirmar Exclusão
+            </button>
+          </div>
+        </div>
+      `);
+    }
+
+    function confirmDeleteKit(kitId) {
+      let kits = getKits();
+      kits = kits.filter(k => k.id !== kitId);
+      saveKits(kits);
+      closeModal();
+      showAlert("Kit Removido", "O kit foi retirado do catálogo.", true);
+      render();
+    }
+
+    function handleCreateKit(e) {
+      e.preventDefault();
+      const cat = document.getElementById("new-kit-cat").value;
+      const title = document.getElementById("new-kit-title").value.trim();
+      const price = parseFloat(document.getElementById("new-kit-price").value);
+      const img = document.getElementById("new-kit-img").value.trim();
+      const rawItems = document.getElementById("new-kit-items").value.trim();
+
+      const items = rawItems.split(",").map(part => {
+        const [n, q] = part.split(":");
+        return { name: (n || "Item").trim(), quantity: (q || "1 un").trim() };
+      });
+
+      const kits = getKits();
+      const newKit = {
+        id: Date.now(),
+        category: cat,
+        title: title,
+        badge: "Novo",
+        price: price,
+        image_url: img,
+        items: items,
+        reviews: []
+      };
+
+      kits.unshift(newKit);
+      saveKits(kits);
+      showAlert("Kit Publicado!", `O kit "${title}" já está disponível para os clientes.`, true);
+      render();
+    }
+
+    function openReviewModal(kitId) {
+      showModal(`
+        <div class="max-w-md w-full">
+          <div class="flex justify-between items-center mb-3">
+            <h3 class="text-base font-black text-stone-900">Deixar Avaliação</h3>
+            <button onclick="closeModal()" class="text-stone-400 font-bold text-lg">&times;</button>
+          </div>
+          <form onsubmit="handleSaveReview(event, ${kitId})" class="space-y-3">
+            <div>
+              <label class="block text-xs font-bold uppercase text-stone-600 mb-1">Seu Nome:</label>
+              <input type="text" id="review-user-name" required value="${currentUser ? currentUser.name : ''}" class="w-full px-3 py-2 text-xs rounded-xl border border-stone-300 font-semibold">
+            </div>
+            <div>
+              <label class="block text-xs font-bold uppercase text-stone-600 mb-1">Nota:</label>
+              <select id="review-rating" class="w-full px-3 py-2 text-xs rounded-xl border border-stone-300 font-bold text-amber-500">
+                <option value="5">★★★★★ (5 Estrelas - Excelente)</option>
+                <option value="4">★★★★☆ (4 Estrelas - Muito Bom)</option>
+                <option value="3">★★★☆☆ (3 Estrelas - Regular)</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-bold uppercase text-stone-600 mb-1">Seu Comentário:</label>
+              <textarea id="review-comment" required rows="2" placeholder="Conte como foi o frescor dos alimentos..." class="w-full px-3 py-2 text-xs rounded-xl border border-stone-300"></textarea>
+            </div>
+            <button type="submit" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-2.5 rounded-xl text-xs transition shadow">
+              Publicar Avaliação
+            </button>
+          </form>
+        </div>
+      `);
+    }
+
+    function handleSaveReview(e, kitId) {
+      e.preventDefault();
+      const name = document.getElementById("review-user-name").value.trim();
+      const rating = parseInt(document.getElementById("review-rating").value);
+      const comment = document.getElementById("review-comment").value.trim();
+
+      const kits = getKits();
+      const kit = kits.find(k => k.id === kitId);
+      if (kit) {
+        if (!kit.reviews) kit.reviews = [];
+        kit.reviews.unshift({
+          name: name,
+          rating: rating,
+          comment: comment,
+          date: new Date().toLocaleDateString("pt-BR")
+        });
+        saveKits(kits);
+        closeModal();
+        showAlert("Obrigado!", "Sua avaliação foi registrada com sucesso.", true);
+        render();
+      }
+    }
+
+    function setupSupplierChart() {
+      const canvas = document.getElementById("supplierSalesChart");
+      if (!canvas) return;
+
+      const allOrders = getOrders();
+      const dateMap = {};
+      const sortedOrders = [...allOrders].sort((a, b) => new Date(a.createdAt || 0) - new Date(b.createdAt || 0));
+
+      sortedOrders.forEach(o => {
+        const d = o.date || "Hoje";
+        dateMap[d] = (dateMap[d] || 0) + o.total;
+      });
+
+      const labels = Object.keys(dateMap).slice(-7);
+      const dataValues = labels.map(l => dateMap[l]);
+
+      if (salesChartInstance) {
+        salesChartInstance.destroy();
+      }
+
+      const ctx = canvas.getContext("2d");
+      salesChartInstance = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: labels.length ? labels : ['Hoje'],
+          datasets: [{
+            label: 'Receita (R$)',
+            data: dataValues.length ? dataValues : [0],
+            backgroundColor: 'rgba(5, 150, 105, 0.75)',
+            borderColor: 'rgb(5, 150, 105)',
+            borderWidth: 2,
+            borderRadius: 8
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks: {
+                callback: function(val) { return 'R$ ' + val; }
+              }
+            }
+          }
+        }
+      });
+    }
+
+    function render() {
+      renderNavbar();
+      updateCartBadge();
+      const container = document.getElementById("app-container");
+      if (!container) return;
+
+      if (currentRoute === "store") {
+        container.innerHTML = renderStore();
+      } else if (currentRoute === "checkout") {
+        container.innerHTML = renderCheckout();
+      } else if (currentRoute === "orders") {
+        container.innerHTML = renderOrders();
+      } else if (currentRoute === "supplier") {
+        container.innerHTML = renderSupplier();
+        setTimeout(setupSupplierChart, 60);
+      } else if (currentRoute === "auth") {
+        container.innerHTML = renderAuth();
+      }
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      render();
+    });
+    // Chamada imediata caso o DOM já esteja pronto
+    if (document.readyState === 'interactive' || document.readyState === 'complete') {
+      render();
+    }
+  </script>
+</body>
+</html>
